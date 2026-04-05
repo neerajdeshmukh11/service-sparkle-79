@@ -247,15 +247,15 @@ export const CustomerChat = () => {
 
 // ===== Customer Support (AI Chatbot) =====
 export const CustomerSupport = () => {
-  const [messages, setMessages] = useState([
-    { id: "1", role: "bot" as const, text: "Hello! 👋 I'm your SmartServ AI assistant. How can I help you today?" },
-    { id: "2", role: "bot" as const, text: "I can help you with:\n• Finding services\n• Booking assistance\n• Payment issues\n• Complaint registration\n• Contact support" },
+  const [messages, setMessages] = useState<{id: string; role: "bot" | "user"; text: string}[]>([
+    { id: "1", role: "bot", text: "Hello! 👋 I'm your SmartServ AI assistant. How can I help you today?" },
+    { id: "2", role: "bot", text: "I can help you with:\n• Finding services\n• Booking assistance\n• Payment issues\n• Complaint registration\n• Contact support" },
   ]);
   const [input, setInput] = useState("");
   const sendMsg = () => {
     if (!input.trim()) return;
-    const userMsg = { id: Date.now().toString(), role: "user" as const, text: input };
-    const botReply = { id: (Date.now() + 1).toString(), role: "bot" as const, text: getBotReply(input) };
+    const userMsg: {id: string; role: "user"; text: string} = { id: Date.now().toString(), role: "user", text: input };
+    const botReply: {id: string; role: "bot"; text: string} = { id: (Date.now() + 1).toString(), role: "bot", text: getBotReply(input) };
     setMessages([...messages, userMsg, botReply]);
     setInput("");
   };
