@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from "@/components/ui/input";
 
 const ProviderJobs = () => {
-  const [jobs, setJobs] = useState(mockProviderJobs);
+  const [jobs, setJobs] = useState(mockProviderJobs.map(j => ({ ...j, stage: (j as any).stage || "" })));
   const [extraCharge, setExtraCharge] = useState("");
 
   const updateJobStatus = (id: string, status: string, stage?: string) => {
