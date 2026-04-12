@@ -59,7 +59,7 @@ const AuthPage = () => {
             <div className="p-3 bg-primary-foreground/20 rounded-xl">
               <Home className="w-8 h-8" />
             </div>
-            <h1 className="text-3xl font-bold">SmartServ</h1>
+            <h1 className="text-3xl font-bold">HomeGenie</h1>
           </div>
           <h2 className="text-4xl font-bold mb-6 leading-tight">
             Smart Home Services Platform
@@ -90,13 +90,13 @@ const AuthPage = () => {
             <div className="p-2 gradient-primary rounded-lg">
               <Home className="w-6 h-6 text-primary-foreground" />
             </div>
-            <h1 className="text-2xl font-bold gradient-text">SmartServ</h1>
+            <h1 className="text-2xl font-bold gradient-text">HomeGenie</h1>
           </div>
 
           <Card className="border-0 shadow-xl">
             <CardHeader className="text-center pb-2">
               <CardTitle className="text-2xl">{isLogin ? "Welcome Back" : "Create Account"}</CardTitle>
-              <CardDescription>{isLogin ? "Sign in to your account" : "Get started with SmartServ"}</CardDescription>
+              <CardDescription>{isLogin ? "Sign in to your account" : "Get started with HomeGenie"}</CardDescription>
             </CardHeader>
             <CardContent>
               {/* Role Tabs */}
