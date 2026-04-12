@@ -35,6 +35,7 @@ import ProviderComplaints from "@/pages/provider/ProviderComplaints";
 // Customer
 import { CustomerHome, CustomerServices, CustomerBookings, CustomerInvoices, CustomerChat, CustomerSupport, CustomerProfile } from "@/pages/customer/CustomerPages";
 
+import HomePage from "@/pages/HomePage";
 import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -51,7 +52,8 @@ const AppRoutes = () => {
 
   return (
     <Routes>
-      <Route path="/" element={isAuthenticated ? <Navigate to={`/${user?.role}`} replace /> : <AuthPage />} />
+      <Route path="/" element={isAuthenticated ? <Navigate to={`/${user?.role}`} replace /> : <HomePage />} />
+      <Route path="/auth" element={isAuthenticated ? <Navigate to={`/${user?.role}`} replace /> : <AuthPage />} />
 
       {/* Admin Routes */}
       <Route path="/admin" element={<ProtectedRoute role="admin"><AdminDashboard /></ProtectedRoute>} />
