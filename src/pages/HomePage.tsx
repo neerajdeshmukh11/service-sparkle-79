@@ -24,8 +24,8 @@ const steps = [
 ];
 
 const testimonials = [
-  { name: "Sarah Johnson", role: "Homeowner", rating: 5, text: "SmartServ transformed my home renovation experience. The plumber arrived on time and did an exceptional job!", avatar: "SJ" },
-  { name: "Mike Chen", role: "Business Owner", rating: 5, text: "We use SmartServ for all our office maintenance. The quality and reliability is unmatched.", avatar: "MC" },
+  { name: "Sarah Johnson", role: "Homeowner", rating: 5, text: "HomeGenie transformed my home renovation experience. The plumber arrived on time and did an exceptional job!", avatar: "SJ" },
+  { name: "Mike Chen", role: "Business Owner", rating: 5, text: "We use HomeGenie for all our office maintenance. The quality and reliability is unmatched.", avatar: "MC" },
   { name: "Priya Sharma", role: "Apartment Tenant", rating: 5, text: "Booking was seamless and the electrician was incredibly professional. Highly recommend!", avatar: "PS" },
 ];
 
@@ -56,7 +56,7 @@ export default function HomePage() {
             <div className="w-9 h-9 rounded-lg gradient-primary flex items-center justify-center">
               <Zap className="w-5 h-5 text-primary-foreground" />
             </div>
-            <span className="text-xl font-bold gradient-text">SmartServ</span>
+            <span className="text-xl font-bold gradient-text">HomeGenie</span>
           </div>
           <div className="hidden md:flex items-center gap-8">
             <a href="#services" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Services</a>
@@ -260,7 +260,7 @@ export default function HomePage() {
       <section className="py-20 md:py-28 px-4 text-center">
         <div className="max-w-2xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Get Started?</h2>
-          <p className="text-muted-foreground text-lg mb-8">Join thousands of homeowners who trust SmartServ for all their service needs.</p>
+          <p className="text-muted-foreground text-lg mb-8">Join thousands of homeowners who trust HomeGenie for all their service needs.</p>
           <Button size="lg" className="gradient-primary border-0 text-primary-foreground px-10 h-13 text-base shadow-lg shadow-primary/25" onClick={() => navigate("/auth")}>
             Book Your First Service <ArrowRight className="w-5 h-5 ml-2" />
           </Button>
@@ -275,7 +275,7 @@ export default function HomePage() {
               <div className="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center">
                 <Zap className="w-4 h-4 text-primary-foreground" />
               </div>
-              <span className="font-bold text-lg gradient-text">SmartServ</span>
+              <span className="font-bold text-lg gradient-text">HomeGenie</span>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">Professional home services at your fingertips. Quality guaranteed.</p>
           </div>
@@ -301,7 +301,7 @@ export default function HomePage() {
           </div>
         </div>
         <div className="max-w-7xl mx-auto mt-10 pt-6 border-t border-border/50 text-center text-sm text-muted-foreground">
-          © 2026 SmartServ. All rights reserved.
+          © 2026 HomeGenie. All rights reserved.
         </div>
       </footer>
     </div>
