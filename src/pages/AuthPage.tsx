@@ -67,19 +67,6 @@ const AuthPage = () => {
           <p className="text-lg opacity-90 mb-8">
             Connect with trusted service providers for all your home needs. From plumbing to cleaning, we've got you covered.
           </p>
-          <div className="grid grid-cols-2 gap-4">
-            {[
-              { label: "500+ Providers", sub: "Verified professionals" },
-              { label: "10K+ Bookings", sub: "Completed successfully" },
-              { label: "4.8★ Rating", sub: "Average provider rating" },
-              { label: "24/7 Support", sub: "Always here for you" },
-            ].map((item) => (
-              <div key={item.label} className="bg-primary-foreground/10 rounded-lg p-4 backdrop-blur-sm">
-                <p className="font-semibold text-lg">{item.label}</p>
-                <p className="text-sm opacity-75">{item.sub}</p>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
 
