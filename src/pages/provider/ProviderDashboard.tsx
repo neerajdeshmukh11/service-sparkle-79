@@ -71,7 +71,7 @@ const ProviderDashboard = () => {
                       <p className="text-sm text-muted-foreground">{j.customer} • {j.date} at {j.time}</p>
                       <p className="text-sm text-muted-foreground">{j.address}</p>
                     </div>
-                    <p className="text-lg font-bold">${j.amount}</p>
+                    <p className="text-lg font-bold">₹{j.amount}</p>
                   </div>
                   <div className="flex gap-2 mt-3">
                     <Button size="sm" className="bg-success text-success-foreground hover:bg-success/90">Accept</Button>

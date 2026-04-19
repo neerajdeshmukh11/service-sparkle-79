@@ -90,7 +90,7 @@ const ProviderJobs = () => {
                       <span className="flex items-center gap-2"><Clock className="w-4 h-4" />{j.date} at {j.time}</span>
                       <span className="flex items-center gap-2"><Phone className="w-4 h-4" />{j.customerPhone}</span>
                       <span className="flex items-center gap-2 col-span-full"><MapPin className="w-4 h-4 shrink-0" />{j.customerAddress}</span>
-                      <span className="flex items-center gap-2"><DollarSign className="w-4 h-4" />${j.amount.toFixed(2)}</span>
+                      <span className="flex items-center gap-2"><DollarSign className="w-4 h-4" />₹{j.amount.toFixed(2)}</span>
                     </div>
                     <p className="text-sm">Customer: <strong>{j.customerName}</strong></p>
                     {j.notes && <p className="text-sm text-muted-foreground italic">"{j.notes}"</p>}

@@ -93,7 +93,7 @@ const AdminDashboard = () => {
                     <td className="py-3 px-4">{b.customerName}</td>
                     <td className="py-3 px-4">{b.service}</td>
                     <td className="py-3 px-4">{b.providerName}</td>
-                    <td className="py-3 px-4 font-semibold">${b.amount}</td>
+                    <td className="py-3 px-4 font-semibold">₹{b.amount}</td>
                     <td className="py-3 px-4"><StatusBadge status={b.status} /></td>
                   </tr>
                 ))}

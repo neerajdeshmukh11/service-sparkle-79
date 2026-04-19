@@ -65,7 +65,7 @@ const CustomerWallet = () => {
                 <Wallet className="w-4 h-4" />
                 <span>Available Balance</span>
               </div>
-              <p className="text-5xl font-bold tracking-tight">${walletBalance.toFixed(2)}</p>
+              <p className="text-5xl font-bold tracking-tight">₹{walletBalance.toFixed(2)}</p>
               <p className="text-primary-foreground/70 text-sm mt-2">HomeGenie Wallet • Ready to pay</p>
             </div>
             <Dialog open={open} onOpenChange={setOpen}>

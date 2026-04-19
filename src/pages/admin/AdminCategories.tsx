@@ -115,7 +115,7 @@ const AdminCategories = () => {
                   <tr key={s.id} className="border-b border-border/50 hover:bg-muted/30 transition-colors">
                     <td className="py-3 px-4 font-medium">{s.name}</td>
                     <td className="py-3 px-4"><Badge variant="secondary">{categories.find(c => c.id === s.categoryId)?.name}</Badge></td>
-                    <td className="py-3 px-4 font-semibold">${s.price}</td>
+                    <td className="py-3 px-4 font-semibold">₹{s.price}</td>
                     <td className="py-3 px-4 text-muted-foreground">{s.duration}</td>
                     <td className="py-3 px-4"><StatusBadge status={s.status} /></td>
                   </tr>

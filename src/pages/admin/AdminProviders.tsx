@@ -121,7 +121,7 @@ const AdminProviders = () => {
                       </div>
                     </td>
                     <td className="py-3 px-4">{p.jobs}</td>
-                    <td className="py-3 px-4 font-semibold">${p.earnings.toLocaleString()}</td>
+                    <td className="py-3 px-4 font-semibold">₹{p.earnings.toLocaleString()}</td>
                     <td className="py-3 px-4">
                       <Button variant="ghost" size="sm" onClick={() => toggleVerify(p.id)}>
                         {p.verified ? <Shield className="w-4 h-4 text-success" /> : <ShieldOff className="w-4 h-4 text-muted-foreground" />}
