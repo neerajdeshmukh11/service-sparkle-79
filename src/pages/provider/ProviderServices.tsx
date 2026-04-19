@@ -24,7 +24,7 @@ const ProviderServices = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {mockCategories.map(c => (
-          <Card key={c.id} className={`cursor-pointer transition-all hover:shadow-lg ₹{selected.includes(c.id) ? "ring-2 ring-primary bg-primary/5" : ""}`} onClick={() => toggle(c.id)}>
+          <Card key={c.id} className={`cursor-pointer transition-all hover:shadow-lg ${selected.includes(c.id) ? "ring-2 ring-primary bg-primary/5" : ""}`} onClick={() => toggle(c.id)}>
             <CardContent className="p-5">
               <div className="flex items-start justify-between">
                 <div className="text-3xl mb-2">{c.icon}</div>

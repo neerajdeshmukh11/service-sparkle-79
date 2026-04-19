@@ -98,7 +98,7 @@ export const AppStateProvider = ({ children }: { children: ReactNode }) => {
     setWalletBalance((prev) => {
       const next = prev + amount;
       setWalletTransactions((tx) => [
-        { id: `w${Date.now()}`, type: "credit", description: `Added money via ₹{method}`, amount, balanceAfter: next, date: now() },
+        { id: `w${Date.now()}`, type: "credit", description: `Added money via ${method}`, amount, balanceAfter: next, date: now() },
         ...tx,
       ]);
       return next;
@@ -112,7 +112,7 @@ export const AppStateProvider = ({ children }: { children: ReactNode }) => {
     const newBalance = walletBalance - booking.amount;
     setWalletBalance(newBalance);
     setWalletTransactions((tx) => [
-      { id: `w${Date.now()}`, type: "debit", description: `Payment for ₹{booking.service} — ₹{booking.providerName}`, amount: booking.amount, balanceAfter: newBalance, date: now(), bookingId },
+      { id: `w${Date.now()}`, type: "debit", description: `Payment for ${booking.service} — ${booking.providerName}`, amount: booking.amount, balanceAfter: newBalance, date: now(), bookingId },
       ...tx,
     ]);
     setBookings((prev) =>
@@ -132,7 +132,7 @@ export const AppStateProvider = ({ children }: { children: ReactNode }) => {
     setWalletBalance((prev) => {
       const next = prev + booking.amount;
       setWalletTransactions((tx) => [
-        { id: `w${Date.now()}`, type: "credit", description: `Refund — ₹{booking.service} declined by ₹{booking.providerName}`, amount: booking.amount, balanceAfter: next, date: now(), bookingId },
+        { id: `w${Date.now()}`, type: "credit", description: `Refund — ${booking.service} declined by ${booking.providerName}`, amount: booking.amount, balanceAfter: next, date: now(), bookingId },
         ...tx,
       ]);
       return next;

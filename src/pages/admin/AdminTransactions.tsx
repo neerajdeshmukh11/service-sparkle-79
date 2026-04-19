@@ -69,12 +69,12 @@ const AdminTransactions = () => {
               </thead>
               <tbody>
                 {filtered.map(t => (
-                  <tr key={t.id} className={`border-b border-border/50 hover:bg-muted/30 transition-colors ₹{t.flagged ? "bg-destructive/5" : ""}`}>
+                  <tr key={t.id} className={`border-b border-border/50 hover:bg-muted/30 transition-colors ${t.flagged ? "bg-destructive/5" : ""}`}>
                     <td className="py-3 px-4 font-mono text-xs">#{t.id}</td>
                     <td className="py-3 px-4">{t.customer}</td>
                     <td className="py-3 px-4">{t.provider}</td>
-                    <td className="py-3 px-4 font-semibold">₹{t.amount}</td>
-                    <td className="py-3 px-4 text-muted-foreground">₹{t.platformFee}</td>
+                    <td className="py-3 px-4 font-semibold">${t.amount}</td>
+                    <td className="py-3 px-4 text-muted-foreground">${t.platformFee}</td>
                     <td className="py-3 px-4">{t.method}</td>
                     <td className="py-3 px-4 text-muted-foreground">{t.date}</td>
                     <td className="py-3 px-4"><StatusBadge status={t.status} /></td>

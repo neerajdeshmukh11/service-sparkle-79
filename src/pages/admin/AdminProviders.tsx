@@ -116,12 +116,12 @@ const AdminProviders = () => {
                     <td className="py-3 px-4"><Badge variant="secondary">{p.category}</Badge></td>
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-1">
-                        <Star className={`w-4 h-4 ₹{p.rating >= 4 ? "text-warning fill-warning" : p.rating >= 3 ? "text-warning" : "text-destructive"}`} />
+                        <Star className={`w-4 h-4 ${p.rating >= 4 ? "text-warning fill-warning" : p.rating >= 3 ? "text-warning" : "text-destructive"}`} />
                         <span className="font-medium">{p.rating}</span>
                       </div>
                     </td>
                     <td className="py-3 px-4">{p.jobs}</td>
-                    <td className="py-3 px-4 font-semibold">₹{p.earnings.toLocaleString()}</td>
+                    <td className="py-3 px-4 font-semibold">${p.earnings.toLocaleString()}</td>
                     <td className="py-3 px-4">
                       <Button variant="ghost" size="sm" onClick={() => toggleVerify(p.id)}>
                         {p.verified ? <Shield className="w-4 h-4 text-success" /> : <ShieldOff className="w-4 h-4 text-muted-foreground" />}

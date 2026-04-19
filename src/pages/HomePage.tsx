@@ -139,7 +139,7 @@ export default function HomePage() {
             {services.map(({ icon: Icon, title, desc, color }) => (
               <Card key={title} className="group border-border/50 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 cursor-pointer overflow-hidden">
                 <CardContent className="p-6 flex items-start gap-4">
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ₹{color} flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform`}>
+                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform`}>
                     <Icon className="w-6 h-6 text-primary-foreground" />
                   </div>
                   <div>
@@ -244,7 +244,7 @@ export default function HomePage() {
                 <CardContent className="p-0">
                   <div className="flex items-center justify-between p-5">
                     <span className="font-medium">{q}</span>
-                    <ChevronRight className={`w-5 h-5 text-muted-foreground transition-transform shrink-0 ml-4 ₹{openFaq === i ? "rotate-90" : ""}`} />
+                    <ChevronRight className={`w-5 h-5 text-muted-foreground transition-transform shrink-0 ml-4 ${openFaq === i ? "rotate-90" : ""}`} />
                   </div>
                   {openFaq === i && (
                     <div className="px-5 pb-5 text-sm text-muted-foreground animate-fade-in">{a}</div>
