@@ -93,7 +93,7 @@ const CustomerWallet = () => {
                     <div className="flex gap-2 mt-2 flex-wrap">
                       {QUICK_AMOUNTS.map((a) => (
                         <Button key={a} type="button" variant="outline" size="sm" onClick={() => setAmount(String(a))}>
-                          ${a}
+                          ₹{a}
                         </Button>
                       ))}
                     </div>
@@ -127,7 +127,7 @@ const CustomerWallet = () => {
                 <DialogFooter>
                   <Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
                   <Button onClick={handleAdd} className="gradient-primary text-primary-foreground">
-                    Add ${amount || "0"}
+                    Add ₹{amount || "0"}
                   </Button>
                 </DialogFooter>
               </DialogContent>
