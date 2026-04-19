@@ -28,7 +28,7 @@ const ProviderDashboard = () => {
         <div className="flex items-center gap-3 bg-card p-3 rounded-lg border">
           <span className="text-sm font-medium">Availability:</span>
           <Switch checked={available} onCheckedChange={setAvailable} />
-          <span className={`text-sm font-semibold ${available ? "text-success" : "text-destructive"}`}>
+          <span className={`text-sm font-semibold ₹{available ? "text-success" : "text-destructive"}`}>
             {available ? "Available" : "Unavailable"}
           </span>
         </div>
@@ -37,7 +37,7 @@ const ProviderDashboard = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatsCard title="Total Jobs" value={stats.totalJobs} change={`${stats.activeJobs} active`} changeType="neutral" icon={Briefcase} iconColor="bg-primary/10 text-primary" />
         <StatsCard title="Completed" value={stats.completedJobs} change="91% completion" changeType="positive" icon={CheckCircle} iconColor="bg-success/10 text-success" />
-        <StatsCard title="Wallet Balance" value={`₹${stats.walletBalance.toLocaleString()}`} icon={DollarSign} iconColor="bg-warning/10 text-warning" />
+        <StatsCard title="Wallet Balance" value={`₹₹{stats.walletBalance.toLocaleString()}`} icon={DollarSign} iconColor="bg-warning/10 text-warning" />
         <StatsCard title="Rating" value={stats.rating} change="Excellent" changeType="positive" icon={Star} iconColor="bg-info/10 text-info" />
       </div>
 
@@ -71,7 +71,7 @@ const ProviderDashboard = () => {
                       <p className="text-sm text-muted-foreground">{j.customer} • {j.date} at {j.time}</p>
                       <p className="text-sm text-muted-foreground">{j.address}</p>
                     </div>
-                    <p className="text-lg font-bold">${j.amount}</p>
+                    <p className="text-lg font-bold">₹{j.amount}</p>
                   </div>
                   <div className="flex gap-2 mt-3">
                     <Button size="sm" className="bg-success text-success-foreground hover:bg-success/90">Accept</Button>

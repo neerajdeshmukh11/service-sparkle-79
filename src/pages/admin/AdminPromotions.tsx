@@ -15,7 +15,7 @@ const AdminPromotions = () => {
 
   const addPromo = () => {
     if (!newPromo.title) return;
-    setPromotions([...promotions, { id: `promo${promotions.length + 1}`, ...newPromo, discount: Number(newPromo.discount), status: "active", usageCount: 0 }]);
+    setPromotions([...promotions, { id: `promo₹{promotions.length + 1}`, ...newPromo, discount: Number(newPromo.discount), status: "active", usageCount: 0 }]);
     setNewPromo({ title: "", description: "", discount: "", type: "percentage", validFrom: "", validTo: "" });
     setShowAdd(false);
   };
@@ -61,7 +61,7 @@ const AdminPromotions = () => {
               <p className="text-sm text-muted-foreground mb-3">{p.description}</p>
               <div className="flex items-center gap-2 mb-3">
                 <Badge className="bg-primary/10 text-primary border-0 text-lg font-bold">
-                  {p.type === "percentage" ? `${p.discount}%` : `₹${p.discount}`} OFF
+                  {p.type === "percentage" ? `${p.discount}%` : `₹₹{p.discount}`} OFF
                 </Badge>
               </div>
               <div className="text-xs text-muted-foreground space-y-1">

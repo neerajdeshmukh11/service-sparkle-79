@@ -30,8 +30,8 @@ const AdminTransactions = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <StatsCard title="Total Processed" value={`₹${totalRevenue.toLocaleString()}`} icon={DollarSign} iconColor="bg-success/10 text-success" />
-        <StatsCard title="Platform Fees" value={`₹${totalFees.toLocaleString()}`} icon={CreditCard} iconColor="bg-primary/10 text-primary" />
+        <StatsCard title="Total Processed" value={`₹₹{totalRevenue.toLocaleString()}`} icon={DollarSign} iconColor="bg-success/10 text-success" />
+        <StatsCard title="Platform Fees" value={`₹₹{totalFees.toLocaleString()}`} icon={CreditCard} iconColor="bg-primary/10 text-primary" />
         <StatsCard title="Flagged Transactions" value={flaggedCount} change="Needs review" changeType="negative" icon={AlertTriangle} iconColor="bg-destructive/10 text-destructive" />
       </div>
 
@@ -69,12 +69,12 @@ const AdminTransactions = () => {
               </thead>
               <tbody>
                 {filtered.map(t => (
-                  <tr key={t.id} className={`border-b border-border/50 hover:bg-muted/30 transition-colors ${t.flagged ? "bg-destructive/5" : ""}`}>
+                  <tr key={t.id} className={`border-b border-border/50 hover:bg-muted/30 transition-colors ₹{t.flagged ? "bg-destructive/5" : ""}`}>
                     <td className="py-3 px-4 font-mono text-xs">#{t.id}</td>
                     <td className="py-3 px-4">{t.customer}</td>
                     <td className="py-3 px-4">{t.provider}</td>
-                    <td className="py-3 px-4 font-semibold">${t.amount}</td>
-                    <td className="py-3 px-4 text-muted-foreground">${t.platformFee}</td>
+                    <td className="py-3 px-4 font-semibold">₹{t.amount}</td>
+                    <td className="py-3 px-4 text-muted-foreground">₹{t.platformFee}</td>
                     <td className="py-3 px-4">{t.method}</td>
                     <td className="py-3 px-4 text-muted-foreground">{t.date}</td>
                     <td className="py-3 px-4"><StatusBadge status={t.status} /></td>

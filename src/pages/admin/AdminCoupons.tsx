@@ -17,14 +17,14 @@ const AdminCoupons = () => {
 
   const addCoupon = () => {
     if (!newCoupon.code) return;
-    setCoupons([...coupons, { id: `coup${coupons.length + 1}`, ...newCoupon, discount: Number(newCoupon.discount), minOrder: Number(newCoupon.minOrder), maxDiscount: Number(newCoupon.maxDiscount), maxUsage: Number(newCoupon.maxUsage), status: "active", usageCount: 0 }]);
+    setCoupons([...coupons, { id: `coup₹{coupons.length + 1}`, ...newCoupon, discount: Number(newCoupon.discount), minOrder: Number(newCoupon.minOrder), maxDiscount: Number(newCoupon.maxDiscount), maxUsage: Number(newCoupon.maxUsage), status: "active", usageCount: 0 }]);
     setNewCoupon({ code: "", discount: "", type: "percentage", minOrder: "", maxDiscount: "", validTo: "", maxUsage: "" });
     setShowAdd(false);
   };
 
   const copyCode = (code: string) => {
     navigator.clipboard.writeText(code);
-    toast({ title: "Copied!", description: `Code ${code} copied to clipboard` });
+    toast({ title: "Copied!", description: `Code ₹{code} copied to clipboard` });
   };
 
   return (
@@ -79,9 +79,9 @@ const AdminCoupons = () => {
                     <td className="py-3 px-4">
                       <code className="bg-muted px-2 py-1 rounded font-bold">{c.code}</code>
                     </td>
-                    <td className="py-3 px-4 font-semibold">{c.type === "percentage" ? `${c.discount}%` : `₹${c.discount}`}</td>
-                    <td className="py-3 px-4">${c.minOrder}</td>
-                    <td className="py-3 px-4">${c.maxDiscount}</td>
+                    <td className="py-3 px-4 font-semibold">{c.type === "percentage" ? `${c.discount}%` : `₹₹{c.discount}`}</td>
+                    <td className="py-3 px-4">₹{c.minOrder}</td>
+                    <td className="py-3 px-4">₹{c.maxDiscount}</td>
                     <td className="py-3 px-4">{c.usageCount}/{c.maxUsage}</td>
                     <td className="py-3 px-4 text-muted-foreground">{c.validTo}</td>
                     <td className="py-3 px-4"><StatusBadge status={c.status} /></td>

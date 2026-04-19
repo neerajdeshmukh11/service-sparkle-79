@@ -31,7 +31,7 @@ const ProviderHistory = () => {
                   <td className="py-3 px-4 font-medium">{j.service}</td>
                   <td className="py-3 px-4">{j.customer}</td>
                   <td className="py-3 px-4 text-muted-foreground">{j.date} {j.time}</td>
-                  <td className="py-3 px-4 font-semibold">${j.amount}</td>
+                  <td className="py-3 px-4 font-semibold">₹{j.amount}</td>
                   <td className="py-3 px-4"><StatusBadge status={j.status} /></td>
                 </tr>
               ))}

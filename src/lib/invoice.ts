@@ -26,9 +26,9 @@ export const downloadInvoicePdf = (booking: Booking) => {
   doc.setTextColor(20, 20, 20);
   doc.setFontSize(11);
   doc.setFont("helvetica", "bold");
-  doc.text(`Invoice #${booking.id.toUpperCase()}`, margin, y);
+  doc.text(`Invoice #₹{booking.id.toUpperCase()}`, margin, y);
   doc.setFont("helvetica", "normal");
-  doc.text(`Date: ${booking.paidAt || booking.createdAt}`, W - margin, y, { align: "right" });
+  doc.text(`Date: ₹{booking.paidAt || booking.createdAt}`, W - margin, y, { align: "right" });
 
   y += 30;
   // Two-column billed-to / provider
@@ -57,10 +57,10 @@ export const downloadInvoicePdf = (booking: Booking) => {
 
   y += 30;
   doc.setFont("helvetica", "normal");
-  doc.text(`${booking.service} (${booking.category})`, margin + 10, y);
+  doc.text(`${booking.service} (₹{booking.category})`, margin + 10, y);
   doc.text("1", W - margin - 180, y);
-  doc.text(`₹${booking.amount.toFixed(2)}`, W - margin - 110, y);
-  doc.text(`₹${booking.amount.toFixed(2)}`, W - margin - 10, y, { align: "right" });
+  doc.text(`₹₹{booking.amount.toFixed(2)}`, W - margin - 110, y);
+  doc.text(`₹₹{booking.amount.toFixed(2)}`, W - margin - 10, y, { align: "right" });
 
   y += 18;
   doc.setDrawColor(220, 220, 220);
@@ -68,7 +68,7 @@ export const downloadInvoicePdf = (booking: Booking) => {
   y += 18;
 
   doc.text("Subtotal", W - margin - 110, y);
-  doc.text(`₹${booking.amount.toFixed(2)}`, W - margin - 10, y, { align: "right" });
+  doc.text(`₹₹{booking.amount.toFixed(2)}`, W - margin - 10, y, { align: "right" });
   y += 16;
   doc.text("Extra Charges", W - margin - 110, y);
   doc.text("₹0.00", W - margin - 10, y, { align: "right" });
@@ -78,7 +78,7 @@ export const downloadInvoicePdf = (booking: Booking) => {
   doc.setFont("helvetica", "bold");
   doc.setFontSize(13);
   doc.text("Total Paid", W - margin - 110, y);
-  doc.text(`₹${booking.amount.toFixed(2)}`, W - margin - 10, y, { align: "right" });
+  doc.text(`₹₹{booking.amount.toFixed(2)}`, W - margin - 10, y, { align: "right" });
 
   y += 40;
   doc.setFont("helvetica", "normal");
@@ -86,7 +86,7 @@ export const downloadInvoicePdf = (booking: Booking) => {
   doc.setTextColor(100, 100, 100);
   doc.text("Payment Method: Wallet", margin, y);
   doc.text(`Status: PAID`, margin, y + 14);
-  doc.text(`Booked: ${booking.date} at ${booking.time}`, margin, y + 28);
+  doc.text(`Booked: ₹{booking.date} at ₹{booking.time}`, margin, y + 28);
 
   // Footer
   doc.setDrawColor(220, 220, 220);
@@ -96,5 +96,5 @@ export const downloadInvoicePdf = (booking: Booking) => {
   doc.text("Thank you for choosing HomeGenie!", W / 2, 778, { align: "center" });
   doc.text("support@homegenie.com  •  +1-800-HOMEGENIE", W / 2, 792, { align: "center" });
 
-  doc.save(`invoice-${booking.id}.pdf`);
+  doc.save(`invoice-₹{booking.id}.pdf`);
 };
