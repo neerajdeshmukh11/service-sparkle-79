@@ -48,6 +48,7 @@ const customerNav: NavItem[] = [
   { label: "Home", path: "/customer", icon: <Home className="w-5 h-5" /> },
   { label: "Browse Services", path: "/customer/services", icon: <Search className="w-5 h-5" /> },
   { label: "My Bookings", path: "/customer/bookings", icon: <Calendar className="w-5 h-5" /> },
+  { label: "Wallet", path: "/customer/wallet", icon: <Wallet className="w-5 h-5" /> },
   { label: "Invoices", path: "/customer/invoices", icon: <FileText className="w-5 h-5" /> },
   { label: "Chat", path: "/customer/chat", icon: <MessageCircle className="w-5 h-5" /> },
   { label: "Support", path: "/customer/support", icon: <Bot className="w-5 h-5" /> },
@@ -102,7 +103,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
           </div>
           {!collapsed && (
             <div className="animate-fade-in">
-              <h1 className="font-bold text-lg">SmartServ</h1>
+              <h1 className="font-bold text-lg">HomeGenie</h1>
               <p className="text-xs text-sidebar-foreground/60">{getRoleLabel(user.role)}</p>
             </div>
           )}
