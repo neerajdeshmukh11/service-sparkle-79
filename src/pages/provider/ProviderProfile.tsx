@@ -57,7 +57,7 @@ const ProviderProfile = () => {
             <div className="grid grid-cols-3 gap-2 mt-6 pt-4 border-t border-border">
               <div><p className="text-2xl font-bold">{stats.totalJobs}</p><p className="text-xs text-muted-foreground">Total Jobs</p></div>
               <div><p className="text-2xl font-bold">{stats.completedJobs}</p><p className="text-xs text-muted-foreground">Completed</p></div>
-              <div><p className="text-2xl font-bold">${(stats.totalEarnings / 1000).toFixed(1)}k</p><p className="text-xs text-muted-foreground">Earned</p></div>
+              <div><p className="text-2xl font-bold">₹{(stats.totalEarnings / 1000).toFixed(1)}k</p><p className="text-xs text-muted-foreground">Earned</p></div>
             </div>
           </CardContent>
         </Card>

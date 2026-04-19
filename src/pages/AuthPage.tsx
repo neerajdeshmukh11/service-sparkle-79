@@ -8,9 +8,9 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Home, Shield, Wrench, User } from "lucide-react";
 
 const roleConfig: { role: UserRole; label: string; icon: React.ReactNode; color: string; demo: { email: string; password: string } }[] = [
-  { role: "admin", label: "Admin", icon: <Shield className="w-5 h-5" />, color: "from-primary to-primary/80", demo: { email: "admin@smartserv.com", password: "admin123" } },
-  { role: "provider", label: "Provider", icon: <Wrench className="w-5 h-5" />, color: "from-success to-success/80", demo: { email: "provider@smartserv.com", password: "provider123" } },
-  { role: "customer", label: "Customer", icon: <User className="w-5 h-5" />, color: "from-info to-info/80", demo: { email: "customer@smartserv.com", password: "customer123" } },
+  { role: "admin", label: "Admin", icon: <Shield className="w-5 h-5" />, color: "from-primary to-primary/80", demo: { email: "admin@homegenie.com", password: "admin123" } },
+  { role: "provider", label: "Provider", icon: <Wrench className="w-5 h-5" />, color: "from-success to-success/80", demo: { email: "provider@homegenie.com", password: "provider123" } },
+  { role: "customer", label: "Customer", icon: <User className="w-5 h-5" />, color: "from-info to-info/80", demo: { email: "customer@homegenie.com", password: "customer123" } },
 ];
 
 const AuthPage = () => {

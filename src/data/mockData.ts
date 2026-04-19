@@ -83,7 +83,7 @@ export const mockComplaints = [
 // ============ PROMOTIONS ============
 export const mockPromotions = [
   { id: "promo1", title: "New Year Special", description: "20% off on all cleaning services", discount: 20, type: "percentage", validFrom: "2025-01-01", validTo: "2025-01-31", status: "active", usageCount: 45 },
-  { id: "promo2", title: "First Booking Offer", description: "$10 off on first booking", discount: 10, type: "fixed", validFrom: "2024-01-01", validTo: "2025-12-31", status: "active", usageCount: 230 },
+  { id: "promo2", title: "First Booking Offer", description: "₹10 off on first booking", discount: 10, type: "fixed", validFrom: "2024-01-01", validTo: "2025-12-31", status: "active", usageCount: 230 },
   { id: "promo3", title: "Summer Sale", description: "15% off on gardening services", discount: 15, type: "percentage", validFrom: "2024-06-01", validTo: "2024-08-31", status: "expired", usageCount: 89 },
 ];
 
@@ -98,7 +98,7 @@ export const mockCoupons = [
 export const mockNotifications = [
   { id: "n1", title: "Booking Confirmed", message: "Your booking #b3 has been confirmed", target: "customer", type: "booking", date: "2024-12-03", read: false },
   { id: "n2", title: "New Job Available", message: "A new plumbing job is available in your area", target: "provider", type: "job", date: "2024-12-06", read: false },
-  { id: "n3", title: "Payment Received", message: "Payment of $75 received for booking #b1", target: "provider", type: "payment", date: "2024-12-01", read: true },
+  { id: "n3", title: "Payment Received", message: "Payment of ₹75 received for booking #b1", target: "provider", type: "payment", date: "2024-12-01", read: true },
   { id: "n4", title: "Rating Received", message: "You received a 5-star rating from Alice Johnson", target: "provider", type: "rating", date: "2024-12-02", read: true },
   { id: "n5", title: "Complaint Update", message: "Your complaint #cmp2 is being reviewed", target: "customer", type: "complaint", date: "2024-12-04", read: false },
 ];

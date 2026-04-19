@@ -59,8 +59,8 @@ export const downloadInvoicePdf = (booking: Booking) => {
   doc.setFont("helvetica", "normal");
   doc.text(`${booking.service} (${booking.category})`, margin + 10, y);
   doc.text("1", W - margin - 180, y);
-  doc.text(`$${booking.amount.toFixed(2)}`, W - margin - 110, y);
-  doc.text(`$${booking.amount.toFixed(2)}`, W - margin - 10, y, { align: "right" });
+  doc.text(`Rs. ${booking.amount.toFixed(2)}`, W - margin - 110, y);
+  doc.text(`Rs. ${booking.amount.toFixed(2)}`, W - margin - 10, y, { align: "right" });
 
   y += 18;
   doc.setDrawColor(220, 220, 220);
@@ -68,17 +68,17 @@ export const downloadInvoicePdf = (booking: Booking) => {
   y += 18;
 
   doc.text("Subtotal", W - margin - 110, y);
-  doc.text(`$${booking.amount.toFixed(2)}`, W - margin - 10, y, { align: "right" });
+  doc.text(`Rs. ${booking.amount.toFixed(2)}`, W - margin - 10, y, { align: "right" });
   y += 16;
   doc.text("Extra Charges", W - margin - 110, y);
-  doc.text("$0.00", W - margin - 10, y, { align: "right" });
+  doc.text("Rs. 0.00", W - margin - 10, y, { align: "right" });
   y += 8;
   doc.line(W - margin - 200, y, W - margin, y);
   y += 18;
   doc.setFont("helvetica", "bold");
   doc.setFontSize(13);
   doc.text("Total Paid", W - margin - 110, y);
-  doc.text(`$${booking.amount.toFixed(2)}`, W - margin - 10, y, { align: "right" });
+  doc.text(`Rs. ${booking.amount.toFixed(2)}`, W - margin - 10, y, { align: "right" });
 
   y += 40;
   doc.setFont("helvetica", "normal");

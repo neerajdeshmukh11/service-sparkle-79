@@ -34,7 +34,7 @@ export const CustomerHome = () => {
         <StatsCard title="My Bookings" value={myBookings || stats.totalBookings} icon={Calendar} iconColor="bg-primary/10 text-primary" />
         <StatsCard title="Active" value={bookings.filter(b => ["awaiting-acceptance","accepted","in-progress","pending-payment"].includes(b.status)).length} icon={Clock} iconColor="bg-info/10 text-info" />
         <StatsCard title="Completed" value={bookings.filter(b => b.status === "completed").length} icon={Star} iconColor="bg-success/10 text-success" />
-        <StatsCard title="Wallet Balance" value={`$${walletBalance.toFixed(2)}`} icon={Wallet} iconColor="bg-warning/10 text-warning" />
+        <StatsCard title="Wallet Balance" value={`₹${walletBalance.toFixed(2)}`} icon={Wallet} iconColor="bg-warning/10 text-warning" />
       </div>
       <h2 className="text-lg font-semibold mt-4">Popular Services</h2>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -132,7 +132,7 @@ export const CustomerServices = () => {
               <h3 className="font-semibold text-lg">{s.name}</h3>
               <p className="text-sm text-muted-foreground mt-1">Duration: {s.duration}</p>
               <div className="flex items-center justify-between mt-4">
-                <p className="text-2xl font-bold text-primary">${s.price}</p>
+                <p className="text-2xl font-bold text-primary">₹{s.price}</p>
                 <Button className="gradient-primary text-primary-foreground" onClick={() => setBookingService(s)}>Book Now</Button>
               </div>
             </CardContent>
@@ -146,7 +146,7 @@ export const CustomerServices = () => {
           <DialogHeader>
             <DialogTitle>Book {bookingService?.name}</DialogTitle>
             <DialogDescription>
-              ${bookingService?.price} • {bookingService?.duration}
+              ₹{bookingService?.price} • {bookingService?.duration}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 mt-2">
@@ -173,7 +173,7 @@ export const CustomerServices = () => {
           <DialogFooter>
             <Button variant="outline" onClick={() => { setBookingService(null); resetForm(); }}>Cancel</Button>
             <Button onClick={handleConfirm} className="gradient-primary text-primary-foreground">
-              Confirm Booking — ${bookingService?.price}
+              Confirm Booking — ₹{bookingService?.price}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -231,7 +231,7 @@ export const CustomerBookings = () => {
         <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-card border border-border shadow-sm">
           <Wallet className="w-4 h-4 text-primary" />
           <span className="text-sm text-muted-foreground">Wallet:</span>
-          <span className="font-semibold">${walletBalance.toFixed(2)}</span>
+          <span className="font-semibold">₹{walletBalance.toFixed(2)}</span>
         </div>
       </div>
 
@@ -270,7 +270,7 @@ export const CustomerBookings = () => {
                     <p className="text-sm text-muted-foreground">Provider: <strong className="text-foreground">{b.providerName}</strong></p>
                     <p className="text-sm text-muted-foreground flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" />{b.date} at {b.time}</p>
                   </div>
-                  <p className="text-2xl font-bold text-primary">${b.amount.toFixed(2)}</p>
+                  <p className="text-2xl font-bold text-primary">₹{b.amount.toFixed(2)}</p>
                 </div>
 
                 {/* Action row */}
@@ -366,7 +366,7 @@ export const CustomerBookings = () => {
               <div className="flex justify-between"><span className="text-muted-foreground">Service</span><span className="font-medium">{paySuccess?.service}</span></div>
               <div className="flex justify-between"><span className="text-muted-foreground">Provider</span><span className="font-medium">{paySuccess?.providerName}</span></div>
               <div className="flex justify-between"><span className="text-muted-foreground">Paid via</span><span className="font-medium">Wallet</span></div>
-              <div className="flex justify-between text-base pt-2 border-t border-border"><span className="font-semibold">Amount</span><span className="font-bold text-success">${paySuccess?.amount.toFixed(2)}</span></div>
+              <div className="flex justify-between text-base pt-2 border-t border-border"><span className="font-semibold">Amount</span><span className="font-bold text-success">₹{paySuccess?.amount.toFixed(2)}</span></div>
             </div>
             <div className="flex gap-2 mt-5">
               <Button variant="outline" className="flex-1" onClick={() => { paySuccess && setInvoiceFor(paySuccess); setPaySuccess(null); }}>
@@ -387,7 +387,7 @@ export const CustomerBookings = () => {
             </div>
             <h2 className="text-xl font-bold mb-1">Insufficient Balance</h2>
             <p className="text-muted-foreground mb-4">
-              You need <strong>${insufficient?.amount.toFixed(2)}</strong> but your wallet has only <strong>${walletBalance.toFixed(2)}</strong>.
+              You need <strong>₹{insufficient?.amount.toFixed(2)}</strong> but your wallet has only <strong>₹{walletBalance.toFixed(2)}</strong>.
             </p>
             <p className="text-sm text-muted-foreground mb-5">Add money to your wallet to continue with the payment.</p>
             <div className="flex gap-2">
@@ -430,9 +430,9 @@ export const CustomerBookings = () => {
               <div className="flex justify-between"><span className="text-muted-foreground">Date</span><span>{invoiceFor.date} {invoiceFor.time}</span></div>
               <div className="flex justify-between"><span className="text-muted-foreground">Address</span><span className="text-right max-w-[60%]">{invoiceFor.customerAddress}</span></div>
               <div className="border-t border-border pt-3 space-y-2">
-                <div className="flex justify-between"><span className="text-muted-foreground">Subtotal</span><span>${invoiceFor.amount.toFixed(2)}</span></div>
-                <div className="flex justify-between"><span className="text-muted-foreground">Extra Charges</span><span>$0.00</span></div>
-                <div className="flex justify-between font-bold text-base border-t border-border pt-2"><span>Total Paid</span><span className="text-success">${invoiceFor.amount.toFixed(2)}</span></div>
+                <div className="flex justify-between"><span className="text-muted-foreground">Subtotal</span><span>₹{invoiceFor.amount.toFixed(2)}</span></div>
+                <div className="flex justify-between"><span className="text-muted-foreground">Extra Charges</span><span>₹0.00</span></div>
+                <div className="flex justify-between font-bold text-base border-t border-border pt-2"><span>Total Paid</span><span className="text-success">₹{invoiceFor.amount.toFixed(2)}</span></div>
               </div>
               <div className="flex justify-between"><span className="text-muted-foreground">Payment Method</span><span>Wallet</span></div>
             </div>
@@ -495,9 +495,9 @@ export const CustomerInvoices = () => {
             <div className="space-y-2 text-sm border-t border-border pt-3">
               <div className="flex justify-between"><span className="text-muted-foreground">Service</span><span>{b.service}</span></div>
               <div className="flex justify-between"><span className="text-muted-foreground">Provider</span><span>{b.providerName}</span></div>
-              <div className="flex justify-between"><span className="text-muted-foreground">Base Price</span><span>${b.amount.toFixed(2)}</span></div>
-              <div className="flex justify-between"><span className="text-muted-foreground">Extra Charges</span><span>$0.00</span></div>
-              <div className="flex justify-between font-bold text-base border-t border-border pt-2 mt-2"><span>Total</span><span>${b.amount.toFixed(2)}</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">Base Price</span><span>₹{b.amount.toFixed(2)}</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">Extra Charges</span><span>₹0.00</span></div>
+              <div className="flex justify-between font-bold text-base border-t border-border pt-2 mt-2"><span>Total</span><span>₹{b.amount.toFixed(2)}</span></div>
             </div>
           </CardContent>
         </Card>

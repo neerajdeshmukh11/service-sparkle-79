@@ -16,9 +16,9 @@ const ProviderWallet = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <StatsCard title="Wallet Balance" value={`$${stats.walletBalance.toLocaleString()}`} icon={Wallet} iconColor="bg-primary/10 text-primary" />
-        <StatsCard title="Weekly Earnings" value={`$${stats.weeklyEarnings.toLocaleString()}`} change="+12%" changeType="positive" icon={TrendingUp} iconColor="bg-success/10 text-success" />
-        <StatsCard title="Monthly Earnings" value={`$${stats.monthlyEarnings.toLocaleString()}`} change="+8.5%" changeType="positive" icon={DollarSign} iconColor="bg-warning/10 text-warning" />
+        <StatsCard title="Wallet Balance" value={`₹${stats.walletBalance.toLocaleString()}`} icon={Wallet} iconColor="bg-primary/10 text-primary" />
+        <StatsCard title="Weekly Earnings" value={`₹${stats.weeklyEarnings.toLocaleString()}`} change="+12%" changeType="positive" icon={TrendingUp} iconColor="bg-success/10 text-success" />
+        <StatsCard title="Monthly Earnings" value={`₹${stats.monthlyEarnings.toLocaleString()}`} change="+8.5%" changeType="positive" icon={DollarSign} iconColor="bg-warning/10 text-warning" />
       </div>
 
       <div className="flex gap-2">

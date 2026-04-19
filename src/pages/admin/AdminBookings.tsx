@@ -66,7 +66,7 @@ const AdminBookings = () => {
                     <td className="py-3 px-4">{b.providerName}</td>
                     <td className="py-3 px-4">{b.service}</td>
                     <td className="py-3 px-4 text-muted-foreground">{b.date} {b.time}</td>
-                    <td className="py-3 px-4 font-semibold">${b.amount}</td>
+                    <td className="py-3 px-4 font-semibold">₹{b.amount}</td>
                     <td className="py-3 px-4"><StatusBadge status={b.paymentStatus} /></td>
                     <td className="py-3 px-4"><StatusBadge status={b.status} /></td>
                   </tr>
