@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { AppStateProvider } from "@/contexts/AppStateContext";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import AuthPage from "@/pages/AuthPage";
 
@@ -34,6 +35,7 @@ import ProviderComplaints from "@/pages/provider/ProviderComplaints";
 
 // Customer
 import { CustomerHome, CustomerServices, CustomerBookings, CustomerInvoices, CustomerChat, CustomerSupport, CustomerProfile } from "@/pages/customer/CustomerPages";
+import CustomerWallet from "@/pages/customer/CustomerWallet";
 
 import HomePage from "@/pages/HomePage";
 import NotFound from "@/pages/NotFound";
@@ -87,6 +89,7 @@ const AppRoutes = () => {
       <Route path="/customer/invoices" element={<ProtectedRoute role="customer"><CustomerInvoices /></ProtectedRoute>} />
       <Route path="/customer/chat" element={<ProtectedRoute role="customer"><CustomerChat /></ProtectedRoute>} />
       <Route path="/customer/support" element={<ProtectedRoute role="customer"><CustomerSupport /></ProtectedRoute>} />
+      <Route path="/customer/wallet" element={<ProtectedRoute role="customer"><CustomerWallet /></ProtectedRoute>} />
       <Route path="/customer/profile" element={<ProtectedRoute role="customer"><CustomerProfile /></ProtectedRoute>} />
 
       <Route path="*" element={<NotFound />} />
@@ -100,9 +103,11 @@ const App = () => (
       <Toaster />
       <Sonner />
       <AuthProvider>
-        <BrowserRouter>
-          <AppRoutes />
-        </BrowserRouter>
+        <AppStateProvider>
+          <BrowserRouter>
+            <AppRoutes />
+          </BrowserRouter>
+        </AppStateProvider>
       </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
