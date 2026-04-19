@@ -19,14 +19,14 @@ const AdminCategories = () => {
 
   const addCategory = () => {
     if (!newCat.name) return;
-    setCategories([...categories, { id: `c₹{categories.length + 1}`, ...newCat, subServices: 0, status: "active" }]);
+    setCategories([...categories, { id: `c${categories.length + 1}`, ...newCat, subServices: 0, status: "active" }]);
     setNewCat({ name: "", icon: "", description: "" });
     setShowAddCat(false);
   };
 
   const addSubService = () => {
     if (!newSub.name || !selectedCat) return;
-    setSubServices([...subServices, { id: `ss₹{subServices.length + 1}`, categoryId: selectedCat, name: newSub.name, price: Number(newSub.price), duration: newSub.duration, status: "active" }]);
+    setSubServices([...subServices, { id: `ss${subServices.length + 1}`, categoryId: selectedCat, name: newSub.name, price: Number(newSub.price), duration: newSub.duration, status: "active" }]);
     setNewSub({ name: "", price: "", duration: "" });
     setShowAddSub(false);
   };
@@ -59,7 +59,7 @@ const AdminCategories = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {categories.map(c => (
-          <Card key={c.id} className={`cursor-pointer transition-all hover:shadow-lg ₹{selectedCat === c.id ? "ring-2 ring-primary" : ""}`} onClick={() => setSelectedCat(selectedCat === c.id ? null : c.id)}>
+          <Card key={c.id} className={`cursor-pointer transition-all hover:shadow-lg ${selectedCat === c.id ? "ring-2 ring-primary" : ""}`} onClick={() => setSelectedCat(selectedCat === c.id ? null : c.id)}>
             <CardContent className="p-5">
               <div className="flex items-start justify-between">
                 <div className="text-3xl mb-2">{c.icon}</div>
@@ -81,7 +81,7 @@ const AdminCategories = () => {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className="text-lg">
-            {selectedCat ? `Sub-Services — ₹{categories.find(c => c.id === selectedCat)?.name}` : "All Sub-Services"}
+            {selectedCat ? `Sub-Services — ${categories.find(c => c.id === selectedCat)?.name}` : "All Sub-Services"}
           </CardTitle>
           <Dialog open={showAddSub} onOpenChange={setShowAddSub}>
             <DialogTrigger asChild>
@@ -115,7 +115,7 @@ const AdminCategories = () => {
                   <tr key={s.id} className="border-b border-border/50 hover:bg-muted/30 transition-colors">
                     <td className="py-3 px-4 font-medium">{s.name}</td>
                     <td className="py-3 px-4"><Badge variant="secondary">{categories.find(c => c.id === s.categoryId)?.name}</Badge></td>
-                    <td className="py-3 px-4 font-semibold">₹{s.price}</td>
+                    <td className="py-3 px-4 font-semibold">${s.price}</td>
                     <td className="py-3 px-4 text-muted-foreground">{s.duration}</td>
                     <td className="py-3 px-4"><StatusBadge status={s.status} /></td>
                   </tr>

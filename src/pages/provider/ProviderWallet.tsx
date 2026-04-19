@@ -16,9 +16,9 @@ const ProviderWallet = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <StatsCard title="Wallet Balance" value={`₹₹{stats.walletBalance.toLocaleString()}`} icon={Wallet} iconColor="bg-primary/10 text-primary" />
-        <StatsCard title="Weekly Earnings" value={`₹₹{stats.weeklyEarnings.toLocaleString()}`} change="+12%" changeType="positive" icon={TrendingUp} iconColor="bg-success/10 text-success" />
-        <StatsCard title="Monthly Earnings" value={`₹₹{stats.monthlyEarnings.toLocaleString()}`} change="+8.5%" changeType="positive" icon={DollarSign} iconColor="bg-warning/10 text-warning" />
+        <StatsCard title="Wallet Balance" value={`₹${stats.walletBalance.toLocaleString()}`} icon={Wallet} iconColor="bg-primary/10 text-primary" />
+        <StatsCard title="Weekly Earnings" value={`₹${stats.weeklyEarnings.toLocaleString()}`} change="+12%" changeType="positive" icon={TrendingUp} iconColor="bg-success/10 text-success" />
+        <StatsCard title="Monthly Earnings" value={`₹${stats.monthlyEarnings.toLocaleString()}`} change="+8.5%" changeType="positive" icon={DollarSign} iconColor="bg-warning/10 text-warning" />
       </div>
 
       <div className="flex gap-2">
@@ -31,7 +31,7 @@ const ProviderWallet = () => {
           {mockWalletTransactions.map(t => (
             <div key={t.id} className="flex items-center justify-between p-3 border border-border rounded-lg hover:bg-muted/30 transition-colors">
               <div className="flex items-center gap-3">
-                <div className={`p-2 rounded-lg ₹{t.type === "credit" ? "bg-success/10" : "bg-destructive/10"}`}>
+                <div className={`p-2 rounded-lg ${t.type === "credit" ? "bg-success/10" : "bg-destructive/10"}`}>
                   {t.type === "credit" ? <ArrowDownLeft className="w-4 h-4 text-success" /> : <ArrowUpRight className="w-4 h-4 text-destructive" />}
                 </div>
                 <div>
@@ -40,10 +40,10 @@ const ProviderWallet = () => {
                 </div>
               </div>
               <div className="text-right">
-                <p className={`font-semibold ₹{t.type === "credit" ? "text-success" : "text-destructive"}`}>
-                  {t.type === "credit" ? "+" : "-"}₹{t.amount}
+                <p className={`font-semibold ${t.type === "credit" ? "text-success" : "text-destructive"}`}>
+                  {t.type === "credit" ? "+" : "-"}${t.amount}
                 </p>
-                <p className="text-xs text-muted-foreground">Bal: ₹{t.balance}</p>
+                <p className="text-xs text-muted-foreground">Bal: ${t.balance}</p>
               </div>
             </div>
           ))}

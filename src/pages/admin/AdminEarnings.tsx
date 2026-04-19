@@ -16,9 +16,9 @@ const AdminEarnings = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <StatsCard title="Total Revenue" value={`₹₹{mockDashboardStats.admin.totalRevenue.toLocaleString()}`} change="+18.3% growth" changeType="positive" icon={DollarSign} iconColor="bg-success/10 text-success" />
-        <StatsCard title="Platform Fees" value={`₹₹{totalEarnings.toLocaleString()}`} change="15% commission" changeType="neutral" icon={CreditCard} iconColor="bg-primary/10 text-primary" />
-        <StatsCard title="Total Processed" value={`₹₹{totalProcessed.toLocaleString()}`} change="This period" changeType="neutral" icon={TrendingUp} iconColor="bg-info/10 text-info" />
+        <StatsCard title="Total Revenue" value={`₹${mockDashboardStats.admin.totalRevenue.toLocaleString()}`} change="+18.3% growth" changeType="positive" icon={DollarSign} iconColor="bg-success/10 text-success" />
+        <StatsCard title="Platform Fees" value={`₹${totalEarnings.toLocaleString()}`} change="15% commission" changeType="neutral" icon={CreditCard} iconColor="bg-primary/10 text-primary" />
+        <StatsCard title="Total Processed" value={`₹${totalProcessed.toLocaleString()}`} change="This period" changeType="neutral" icon={TrendingUp} iconColor="bg-info/10 text-info" />
       </div>
 
       <Card>

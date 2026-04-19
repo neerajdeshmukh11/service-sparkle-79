@@ -16,7 +16,7 @@ const ProviderComplaints = () => {
 
   const addComplaint = () => {
     if (!newComplaint.issue) return;
-    setComplaints([...complaints, { id: `pc₹{complaints.length + 1}`, ...newComplaint, status: "open", date: new Date().toISOString().split("T")[0], resolution: "" }]);
+    setComplaints([...complaints, { id: `pc${complaints.length + 1}`, ...newComplaint, status: "open", date: new Date().toISOString().split("T")[0], resolution: "" }]);
     setNewComplaint({ customer: "", bookingId: "", issue: "" });
     setShowAdd(false);
   };
