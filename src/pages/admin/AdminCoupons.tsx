@@ -24,7 +24,7 @@ const AdminCoupons = () => {
 
   const copyCode = (code: string) => {
     navigator.clipboard.writeText(code);
-    toast({ title: "Copied!", description: `Code ${code} copied to clipboard` });
+    toast({ title: "Copied!", description: `Code ₹{code} copied to clipboard` });
   };
 
   return (
@@ -80,8 +80,8 @@ const AdminCoupons = () => {
                       <code className="bg-muted px-2 py-1 rounded font-bold">{c.code}</code>
                     </td>
                     <td className="py-3 px-4 font-semibold">{c.type === "percentage" ? `${c.discount}%` : `₹${c.discount}`}</td>
-                    <td className="py-3 px-4">${c.minOrder}</td>
-                    <td className="py-3 px-4">${c.maxDiscount}</td>
+                    <td className="py-3 px-4">₹{c.minOrder}</td>
+                    <td className="py-3 px-4">₹{c.maxDiscount}</td>
                     <td className="py-3 px-4">{c.usageCount}/{c.maxUsage}</td>
                     <td className="py-3 px-4 text-muted-foreground">{c.validTo}</td>
                     <td className="py-3 px-4"><StatusBadge status={c.status} /></td>

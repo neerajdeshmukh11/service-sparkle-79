@@ -31,7 +31,7 @@ const ProviderWallet = () => {
           {mockWalletTransactions.map(t => (
             <div key={t.id} className="flex items-center justify-between p-3 border border-border rounded-lg hover:bg-muted/30 transition-colors">
               <div className="flex items-center gap-3">
-                <div className={`p-2 rounded-lg ${t.type === "credit" ? "bg-success/10" : "bg-destructive/10"}`}>
+                <div className={`p-2 rounded-lg ₹{t.type === "credit" ? "bg-success/10" : "bg-destructive/10"}`}>
                   {t.type === "credit" ? <ArrowDownLeft className="w-4 h-4 text-success" /> : <ArrowUpRight className="w-4 h-4 text-destructive" />}
                 </div>
                 <div>
@@ -40,10 +40,10 @@ const ProviderWallet = () => {
                 </div>
               </div>
               <div className="text-right">
-                <p className={`font-semibold ${t.type === "credit" ? "text-success" : "text-destructive"}`}>
+                <p className={`font-semibold ₹{t.type === "credit" ? "text-success" : "text-destructive"}`}>
                   {t.type === "credit" ? "+" : "-"}${t.amount}
                 </p>
-                <p className="text-xs text-muted-foreground">Bal: ${t.balance}</p>
+                <p className="text-xs text-muted-foreground">Bal: ₹{t.balance}</p>
               </div>
             </div>
           ))}

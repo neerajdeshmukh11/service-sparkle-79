@@ -16,7 +16,7 @@ const ProviderRatings = () => {
         <CardContent className="p-6 text-center">
           <div className="flex items-center justify-center gap-2 mb-2">
             {[1, 2, 3, 4, 5].map(i => (
-              <Star key={i} className={`w-8 h-8 ${i <= Math.round(stats.rating) ? "text-warning fill-warning" : "text-muted"}`} />
+              <Star key={i} className={`w-8 h-8 ₹{i <= Math.round(stats.rating) ? "text-warning fill-warning" : "text-muted"}`} />
             ))}
           </div>
           <p className="text-4xl font-bold">{stats.rating}</p>
@@ -35,7 +35,7 @@ const ProviderRatings = () => {
                 </div>
                 <div className="flex items-center gap-1">
                   {[1, 2, 3, 4, 5].map(i => (
-                    <Star key={i} className={`w-4 h-4 ${i <= r.rating ? "text-warning fill-warning" : "text-muted"}`} />
+                    <Star key={i} className={`w-4 h-4 ₹{i <= r.rating ? "text-warning fill-warning" : "text-muted"}`} />
                   ))}
                 </div>
               </div>

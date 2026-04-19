@@ -55,7 +55,7 @@ const AdminNotifications = () => {
 
       <div className="space-y-3">
         {notifications.map(n => (
-          <Card key={n.id} className={`hover:shadow-md transition-shadow ${!n.read ? "border-l-4 border-l-primary" : ""}`}>
+          <Card key={n.id} className={`hover:shadow-md transition-shadow ₹{!n.read ? "border-l-4 border-l-primary" : ""}`}>
             <CardContent className="p-4 flex items-start justify-between gap-4">
               <div className="flex items-start gap-3">
                 <div className="p-2 bg-primary/10 rounded-lg mt-0.5">
