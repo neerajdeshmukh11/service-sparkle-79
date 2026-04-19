@@ -146,7 +146,7 @@ export const CustomerServices = () => {
           <DialogHeader>
             <DialogTitle>Book {bookingService?.name}</DialogTitle>
             <DialogDescription>
-              ${bookingService?.price} • {bookingService?.duration}
+              ₹{bookingService?.price} • {bookingService?.duration}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 mt-2">
@@ -173,7 +173,7 @@ export const CustomerServices = () => {
           <DialogFooter>
             <Button variant="outline" onClick={() => { setBookingService(null); resetForm(); }}>Cancel</Button>
             <Button onClick={handleConfirm} className="gradient-primary text-primary-foreground">
-              Confirm Booking — ${bookingService?.price}
+              Confirm Booking — ₹{bookingService?.price}
             </Button>
           </DialogFooter>
         </DialogContent>
