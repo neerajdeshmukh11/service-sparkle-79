@@ -34,7 +34,7 @@ export const CustomerHome = () => {
         <StatsCard title="My Bookings" value={myBookings || stats.totalBookings} icon={Calendar} iconColor="bg-primary/10 text-primary" />
         <StatsCard title="Active" value={bookings.filter(b => ["awaiting-acceptance","accepted","in-progress","pending-payment"].includes(b.status)).length} icon={Clock} iconColor="bg-info/10 text-info" />
         <StatsCard title="Completed" value={bookings.filter(b => b.status === "completed").length} icon={Star} iconColor="bg-success/10 text-success" />
-        <StatsCard title="Wallet Balance" value={`$${walletBalance.toFixed(2)}`} icon={Wallet} iconColor="bg-warning/10 text-warning" />
+        <StatsCard title="Wallet Balance" value={`₹${walletBalance.toFixed(2)}`} icon={Wallet} iconColor="bg-warning/10 text-warning" />
       </div>
       <h2 className="text-lg font-semibold mt-4">Popular Services</h2>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -431,7 +431,7 @@ export const CustomerBookings = () => {
               <div className="flex justify-between"><span className="text-muted-foreground">Address</span><span className="text-right max-w-[60%]">{invoiceFor.customerAddress}</span></div>
               <div className="border-t border-border pt-3 space-y-2">
                 <div className="flex justify-between"><span className="text-muted-foreground">Subtotal</span><span>${invoiceFor.amount.toFixed(2)}</span></div>
-                <div className="flex justify-between"><span className="text-muted-foreground">Extra Charges</span><span>$0.00</span></div>
+                <div className="flex justify-between"><span className="text-muted-foreground">Extra Charges</span><span>₹0.00</span></div>
                 <div className="flex justify-between font-bold text-base border-t border-border pt-2"><span>Total Paid</span><span className="text-success">${invoiceFor.amount.toFixed(2)}</span></div>
               </div>
               <div className="flex justify-between"><span className="text-muted-foreground">Payment Method</span><span>Wallet</span></div>
@@ -496,7 +496,7 @@ export const CustomerInvoices = () => {
               <div className="flex justify-between"><span className="text-muted-foreground">Service</span><span>{b.service}</span></div>
               <div className="flex justify-between"><span className="text-muted-foreground">Provider</span><span>{b.providerName}</span></div>
               <div className="flex justify-between"><span className="text-muted-foreground">Base Price</span><span>${b.amount.toFixed(2)}</span></div>
-              <div className="flex justify-between"><span className="text-muted-foreground">Extra Charges</span><span>$0.00</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">Extra Charges</span><span>₹0.00</span></div>
               <div className="flex justify-between font-bold text-base border-t border-border pt-2 mt-2"><span>Total</span><span>${b.amount.toFixed(2)}</span></div>
             </div>
           </CardContent>

@@ -21,7 +21,7 @@ const AdminDashboard = () => {
         <StatsCard title="Total Users" value={stats.totalUsers.toLocaleString()} change="+12.5% this month" changeType="positive" icon={Users} iconColor="bg-primary/10 text-primary" />
         <StatsCard title="Total Providers" value={stats.totalProviders.toLocaleString()} change="+8 new this week" changeType="positive" icon={Wrench} iconColor="bg-success/10 text-success" />
         <StatsCard title="Total Bookings" value={stats.totalBookings.toLocaleString()} change={`${stats.activeBookings} active`} changeType="neutral" icon={BookOpen} iconColor="bg-info/10 text-info" />
-        <StatsCard title="Total Revenue" value={`$${stats.totalRevenue.toLocaleString()}`} change="+18.3% growth" changeType="positive" icon={DollarSign} iconColor="bg-warning/10 text-warning" />
+        <StatsCard title="Total Revenue" value={`₹${stats.totalRevenue.toLocaleString()}`} change="+18.3% growth" changeType="positive" icon={DollarSign} iconColor="bg-warning/10 text-warning" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

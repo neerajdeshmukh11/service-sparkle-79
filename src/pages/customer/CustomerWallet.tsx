@@ -33,7 +33,7 @@ const CustomerWallet = () => {
       return;
     }
     addMoneyToWallet(amt, METHODS.find((m) => m.id === method)?.label || method);
-    toast.success(`$${amt.toFixed(2)} added to your wallet`, {
+    toast.success(`₹${amt.toFixed(2)} added to your wallet`, {
       description: "You can now complete your pending payments.",
     });
     setOpen(false);

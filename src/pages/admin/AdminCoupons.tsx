@@ -79,7 +79,7 @@ const AdminCoupons = () => {
                     <td className="py-3 px-4">
                       <code className="bg-muted px-2 py-1 rounded font-bold">{c.code}</code>
                     </td>
-                    <td className="py-3 px-4 font-semibold">{c.type === "percentage" ? `${c.discount}%` : `$${c.discount}`}</td>
+                    <td className="py-3 px-4 font-semibold">{c.type === "percentage" ? `${c.discount}%` : `₹${c.discount}`}</td>
                     <td className="py-3 px-4">${c.minOrder}</td>
                     <td className="py-3 px-4">${c.maxDiscount}</td>
                     <td className="py-3 px-4">{c.usageCount}/{c.maxUsage}</td>

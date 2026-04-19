@@ -295,7 +295,7 @@ export default function HomePage() {
             <h4 className="font-semibold mb-3">Contact</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li className="flex items-center gap-2"><Phone className="w-4 h-4" /> +1 (800) 123-4567</li>
-              <li className="flex items-center gap-2"><Mail className="w-4 h-4" /> support@smartserv.com</li>
+              <li className="flex items-center gap-2"><Mail className="w-4 h-4" /> support@homegenie.com</li>
               <li className="flex items-center gap-2"><MessageCircle className="w-4 h-4" /> Live Chat</li>
             </ul>
           </div>
