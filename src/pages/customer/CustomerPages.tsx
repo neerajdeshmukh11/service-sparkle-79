@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { mockCategories, mockSubServices, mockProviders } from "@/data/mockData";
-import { Search, Star, Calendar, Clock, Camera, CreditCard, RotateCcw, MapPin, MessageCircle, Wallet, CheckCircle2, Download, FileText, AlertTriangle, Sparkles } from "lucide-react";
+import { Search, Star, Calendar, Clock, Camera, CreditCard, RotateCcw, MapPin, MessageCircle, Wallet, CheckCircle2, Download, FileText, AlertTriangle, Sparkles, ShoppingCart, Trash2, Plus, Minus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import StatusBadge from "@/components/shared/StatusBadge";
 import StatsCard from "@/components/shared/StatsCard";
@@ -57,13 +57,14 @@ export const CustomerServices = () => {
   const [search, setSearch] = useState("");
   const [selectedCat, setSelectedCat] = useState<string | null>(null);
   const [bookingService, setBookingService] = useState<typeof mockSubServices[0] | null>(null);
+  const [cartService, setCartService] = useState<typeof mockSubServices[0] | null>(null);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [address, setAddress] = useState("");
   const [notes, setNotes] = useState("");
 
   const { user } = useAuth();
-  const { createBooking } = useAppState();
+  const { createBooking, addToCart, cart } = useAppState();
   const navigate = useNavigate();
 
   const filtered = mockSubServices.filter(s => {
@@ -76,6 +77,11 @@ export const CustomerServices = () => {
     setDate(""); setTime(""); setAddress(""); setNotes("");
   };
 
+  const getProviderForCat = (categoryId: string) => {
+    const cat = mockCategories.find(c => c.id === categoryId);
+    return mockProviders.find(p => p.category === cat?.name) || mockProviders[0];
+  };
+
   const handleConfirm = () => {
     if (!bookingService) return;
     if (!date || !time || !address.trim()) {
@@ -83,8 +89,7 @@ export const CustomerServices = () => {
       return;
     }
     const cat = mockCategories.find(c => c.id === bookingService.categoryId);
-    // Pick a default provider for the category (mock matching)
-    const provider = mockProviders.find(p => p.category === cat?.name) || mockProviders[0];
+    const provider = getProviderForCat(bookingService.categoryId);
     createBooking({
       customerId: user?.id || "u1",
       customerName: user?.name || "Customer",
@@ -106,11 +111,49 @@ export const CustomerServices = () => {
     navigate("/customer/bookings");
   };
 
+  const handleAddToCart = () => {
+    if (!cartService) return;
+    if (!date || !time || !address.trim()) {
+      toast.error("Please fill date, time and address");
+      return;
+    }
+    const cat = mockCategories.find(c => c.id === cartService.categoryId);
+    const provider = getProviderForCat(cartService.categoryId);
+    addToCart({
+      serviceId: cartService.id,
+      serviceName: cartService.name,
+      categoryId: cartService.categoryId,
+      categoryName: cat?.name || "Service",
+      price: cartService.price,
+      duration: cartService.duration,
+      providerId: provider.id,
+      providerName: provider.name,
+      providerPhone: provider.phone,
+      date,
+      time,
+      address,
+      notes,
+    });
+    toast.success("Added to cart", { description: `${cartService.name} added. Continue shopping or checkout.` });
+    resetForm();
+    setCartService(null);
+  };
+
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold">Browse Services</h1>
-        <p className="text-muted-foreground">Explore and book services</p>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-bold">Browse Services</h1>
+          <p className="text-muted-foreground">Explore and book services</p>
+        </div>
+        <Button variant="outline" onClick={() => navigate("/customer/cart")} className="relative">
+          <ShoppingCart className="w-4 h-4 mr-1.5" /> Cart
+          {cart.length > 0 && (
+            <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-primary text-primary-foreground text-[11px] font-bold flex items-center justify-center shadow">
+              {cart.length}
+            </span>
+          )}
+        </Button>
       </div>
       <div className="relative">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -131,9 +174,12 @@ export const CustomerServices = () => {
               <Badge variant="secondary" className="mb-3">{mockCategories.find(c => c.id === s.categoryId)?.name}</Badge>
               <h3 className="font-semibold text-lg">{s.name}</h3>
               <p className="text-sm text-muted-foreground mt-1">Duration: {s.duration}</p>
-              <div className="flex items-center justify-between mt-4">
-                <p className="text-2xl font-bold text-primary">₹{s.price}</p>
-                <Button className="gradient-primary text-primary-foreground" onClick={() => setBookingService(s)}>Book Now</Button>
+              <p className="text-2xl font-bold text-primary mt-3">₹{s.price}</p>
+              <div className="flex items-center gap-2 mt-4">
+                <Button variant="outline" className="flex-1" onClick={() => setCartService(s)}>
+                  <ShoppingCart className="w-4 h-4 mr-1.5" /> Add to Cart
+                </Button>
+                <Button className="flex-1 gradient-primary text-primary-foreground" onClick={() => setBookingService(s)}>Book Now</Button>
               </div>
             </CardContent>
           </Card>
@@ -174,6 +220,43 @@ export const CustomerServices = () => {
             <Button variant="outline" onClick={() => { setBookingService(null); resetForm(); }}>Cancel</Button>
             <Button onClick={handleConfirm} className="gradient-primary text-primary-foreground">
               Confirm Booking — ₹{bookingService?.price}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Add-to-cart dialog */}
+      <Dialog open={!!cartService} onOpenChange={(o) => { if (!o) { setCartService(null); resetForm(); } }}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <ShoppingCart className="w-5 h-5 text-primary" /> Add {cartService?.name} to Cart
+            </DialogTitle>
+            <DialogDescription>
+              ₹{cartService?.price} • {cartService?.duration} — schedule details for this service
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 mt-2">
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="text-xs font-medium mb-1 block text-muted-foreground">Date</label>
+                <Input type="date" value={date} onChange={e => setDate(e.target.value)} />
+              </div>
+              <div>
+                <label className="text-xs font-medium mb-1 block text-muted-foreground">Time</label>
+                <Input type="time" value={time} onChange={e => setTime(e.target.value)} />
+              </div>
+            </div>
+            <div>
+              <label className="text-xs font-medium mb-1 block text-muted-foreground">Address</label>
+              <Input placeholder="Service address" value={address} onChange={e => setAddress(e.target.value)} />
+            </div>
+            <Textarea placeholder="Notes for the provider (optional)" value={notes} onChange={e => setNotes(e.target.value)} />
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => { setCartService(null); resetForm(); }}>Cancel</Button>
+            <Button onClick={handleAddToCart} className="gradient-primary text-primary-foreground">
+              <ShoppingCart className="w-4 h-4 mr-1.5" /> Add to Cart
             </Button>
           </DialogFooter>
         </DialogContent>
