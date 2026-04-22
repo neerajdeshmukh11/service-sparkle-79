@@ -359,9 +359,14 @@ export const CustomerBookings = () => {
                 {/* Action row */}
                 <div className="flex flex-wrap gap-2 pt-3 border-t border-border">
                   {b.paymentStatus === "unpaid" && b.status === "pending-payment" && (
-                    <Button size="sm" className="gradient-primary text-primary-foreground" onClick={() => handlePay(b)}>
-                      <Wallet className="w-4 h-4 mr-1.5" /> Pay Now
-                    </Button>
+                    <>
+                      <Button size="sm" className="gradient-primary text-primary-foreground" onClick={() => handlePay(b)}>
+                        <Wallet className="w-4 h-4 mr-1.5" /> Pay Now
+                      </Button>
+                      <Button size="sm" variant="outline" onClick={() => openChat(b)}>
+                        <MessageCircle className="w-4 h-4 mr-1.5" /> Chat with Provider
+                      </Button>
+                    </>
                   )}
                   {b.paymentStatus === "paid" && (b.status === "awaiting-acceptance" || b.status === "accepted" || b.status === "in-progress") && (
                     <>

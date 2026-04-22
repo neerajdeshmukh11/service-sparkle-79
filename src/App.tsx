@@ -36,6 +36,7 @@ import ProviderComplaints from "@/pages/provider/ProviderComplaints";
 // Customer
 import { CustomerHome, CustomerServices, CustomerBookings, CustomerInvoices, CustomerChat, CustomerSupport, CustomerProfile } from "@/pages/customer/CustomerPages";
 import CustomerWallet from "@/pages/customer/CustomerWallet";
+import CustomerCart from "@/pages/customer/CustomerCart";
 
 import HomePage from "@/pages/HomePage";
 import NotFound from "@/pages/NotFound";
@@ -85,6 +86,7 @@ const AppRoutes = () => {
       {/* Customer Routes */}
       <Route path="/customer" element={<ProtectedRoute role="customer"><CustomerHome /></ProtectedRoute>} />
       <Route path="/customer/services" element={<ProtectedRoute role="customer"><CustomerServices /></ProtectedRoute>} />
+      <Route path="/customer/cart" element={<ProtectedRoute role="customer"><CustomerCart /></ProtectedRoute>} />
       <Route path="/customer/bookings" element={<ProtectedRoute role="customer"><CustomerBookings /></ProtectedRoute>} />
       <Route path="/customer/invoices" element={<ProtectedRoute role="customer"><CustomerInvoices /></ProtectedRoute>} />
       <Route path="/customer/chat" element={<ProtectedRoute role="customer"><CustomerChat /></ProtectedRoute>} />
