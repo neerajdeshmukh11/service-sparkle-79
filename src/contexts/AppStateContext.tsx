@@ -48,6 +48,23 @@ export interface ChatMessage {
   timestamp: string;
 }
 
+export interface CartItem {
+  id: string;
+  serviceId: string;
+  serviceName: string;
+  categoryId: string;
+  categoryName: string;
+  price: number;
+  duration: string;
+  providerId: string;
+  providerName: string;
+  providerPhone: string;
+  date: string;
+  time: string;
+  address: string;
+  notes?: string;
+}
+
 interface AppStateContextType {
   bookings: Booking[];
   walletBalance: number;
@@ -55,6 +72,12 @@ interface AppStateContextType {
   chatMessages: ChatMessage[];
   activeChatBookingId: string | null;
   setActiveChatBookingId: (id: string | null) => void;
+  cart: CartItem[];
+  addToCart: (item: Omit<CartItem, "id">) => void;
+  updateCartItem: (id: string, patch: Partial<CartItem>) => void;
+  removeFromCart: (id: string) => void;
+  clearCart: () => void;
+  checkoutCart: (customerId: string, customerName: string, customerPhone: string) => Booking[];
   createBooking: (data: Omit<Booking, "id" | "status" | "paymentStatus" | "stage" | "createdAt">) => Booking;
   payForBooking: (bookingId: string) => { success: boolean; reason?: "insufficient" };
   addMoneyToWallet: (amount: number, method: string) => void;
@@ -80,6 +103,23 @@ export const AppStateProvider = ({ children }: { children: ReactNode }) => {
   const [walletTransactions, setWalletTransactions] = useState<WalletTransaction[]>([]);
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [activeChatBookingId, setActiveChatBookingId] = useState<string | null>(null);
+  const [cart, setCart] = useState<CartItem[]>([]);
+
+  const addToCart: AppStateContextType["addToCart"] = useCallback((item) => {
+    setCart((prev) => [...prev, { ...item, id: `c${Date.now()}${Math.random().toString(36).slice(2, 6)}` }]);
+  }, []);
+
+  const updateCartItem: AppStateContextType["updateCartItem"] = useCallback((id, patch) => {
+    setCart((prev) => prev.map((c) => (c.id === id ? { ...c, ...patch } : c)));
+  }, []);
+
+  const removeFromCart: AppStateContextType["removeFromCart"] = useCallback((id) => {
+    setCart((prev) => prev.filter((c) => c.id !== id));
+  }, []);
+
+  const clearCart: AppStateContextType["clearCart"] = useCallback(() => {
+    setCart([]);
+  }, []);
 
   const createBooking: AppStateContextType["createBooking"] = useCallback((data) => {
     const booking: Booking = {
@@ -93,6 +133,32 @@ export const AppStateProvider = ({ children }: { children: ReactNode }) => {
     setBookings((prev) => [booking, ...prev]);
     return booking;
   }, []);
+
+  const checkoutCart: AppStateContextType["checkoutCart"] = useCallback((customerId, customerName, customerPhone) => {
+    const created: Booking[] = cart.map((c, idx) => ({
+      id: `b${Date.now()}${idx}`,
+      customerId,
+      customerName,
+      customerPhone,
+      customerAddress: c.address,
+      providerId: c.providerId,
+      providerName: c.providerName,
+      providerPhone: c.providerPhone,
+      service: c.serviceName,
+      category: c.categoryName,
+      date: c.date,
+      time: c.time,
+      amount: c.price,
+      notes: c.notes,
+      status: "pending-payment",
+      paymentStatus: "unpaid",
+      stage: "",
+      createdAt: now(),
+    }));
+    setBookings((prev) => [...created, ...prev]);
+    setCart([]);
+    return created;
+  }, [cart]);
 
   const addMoneyToWallet: AppStateContextType["addMoneyToWallet"] = useCallback((amount, method) => {
     setWalletBalance((prev) => {
@@ -179,6 +245,12 @@ export const AppStateProvider = ({ children }: { children: ReactNode }) => {
         chatMessages,
         activeChatBookingId,
         setActiveChatBookingId,
+        cart,
+        addToCart,
+        updateCartItem,
+        removeFromCart,
+        clearCart,
+        checkoutCart,
         createBooking,
         payForBooking,
         addMoneyToWallet,

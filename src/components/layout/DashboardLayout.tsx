@@ -7,8 +7,9 @@ import {
   AlertTriangle, MessageSquare, Bell, BarChart3, DollarSign, Tag,
   Ticket, Shield, ChevronLeft, ChevronRight, LogOut, Home,
   Briefcase, Star, Wallet, Clock, MapPin, Camera, Settings, User,
-  Search, Calendar, FileText, MessageCircle, Bot, Menu, X
+  Search, Calendar, FileText, MessageCircle, Bot, Menu, X, ShoppingCart
 } from "lucide-react";
+import { useAppState } from "@/contexts/AppStateContext";
 import { Button } from "@/components/ui/button";
 
 interface NavItem {
@@ -47,6 +48,7 @@ const providerNav: NavItem[] = [
 const customerNav: NavItem[] = [
   { label: "Home", path: "/customer", icon: <Home className="w-5 h-5" /> },
   { label: "Browse Services", path: "/customer/services", icon: <Search className="w-5 h-5" /> },
+  { label: "My Cart", path: "/customer/cart", icon: <ShoppingCart className="w-5 h-5" /> },
   { label: "My Bookings", path: "/customer/bookings", icon: <Calendar className="w-5 h-5" /> },
   { label: "Wallet", path: "/customer/wallet", icon: <Wallet className="w-5 h-5" /> },
   { label: "Invoices", path: "/customer/invoices", icon: <FileText className="w-5 h-5" /> },
@@ -71,6 +73,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const { user, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+  const { cart } = useAppState();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -113,21 +116,38 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         <nav className="flex-1 overflow-y-auto py-4 px-2 space-y-1">
           {navItems.map((item) => {
             const isActive = location.pathname === item.path;
+            const showCartBadge = item.path === "/customer/cart" && cart.length > 0;
             return (
               <Link
                 key={item.path}
                 to={item.path}
                 onClick={() => setMobileOpen(false)}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group",
+                  "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group relative",
                   isActive
                     ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-lg"
                     : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
                   collapsed && "justify-center px-2"
                 )}
               >
-                {item.icon}
-                {!collapsed && <span className="text-sm font-medium">{item.label}</span>}
+                <div className="relative">
+                  {item.icon}
+                  {showCartBadge && collapsed && (
+                    <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center">
+                      {cart.length}
+                    </span>
+                  )}
+                </div>
+                {!collapsed && (
+                  <>
+                    <span className="text-sm font-medium flex-1">{item.label}</span>
+                    {showCartBadge && (
+                      <span className="ml-auto px-2 py-0.5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold">
+                        {cart.length}
+                      </span>
+                    )}
+                  </>
+                )}
               </Link>
             );
           })}
