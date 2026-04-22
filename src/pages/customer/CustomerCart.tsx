@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { ShoppingCart, Trash2, Calendar, Clock, MapPin, Wallet, MessageCircle, AlertTriangle, CheckCircle2 } from "lucide-react";
+import { ShoppingCart, Trash2, Calendar, Clock, MapPin, Wallet, MessageCircle, CheckCircle2 } from "lucide-react";
 import { useAppState, type CartItem } from "@/contexts/AppStateContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -11,11 +11,10 @@ import { toast } from "sonner";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 const CustomerCart = () => {
-  const { cart, updateCartItem, removeFromCart, clearCart, checkoutCart, walletBalance, payForBooking, setActiveChatBookingId } = useAppState();
+  const { cart, updateCartItem, removeFromCart, clearCart, checkoutCart, walletBalance } = useAppState();
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const [insufficient, setInsufficient] = useState(false);
   const [success, setSuccess] = useState<{ count: number; total: number } | null>(null);
 
   const total = cart.reduce((sum, item) => sum + item.price, 0);
@@ -27,23 +26,9 @@ const CustomerCart = () => {
       toast.error("Please complete date, time and address for every item");
       return;
     }
-    if (walletBalance < total) {
-      setInsufficient(true);
-      return;
-    }
-    // Create bookings, then pay each from wallet
+    // Create unpaid bookings — payment will happen on the bookings page
     const created = checkoutCart(user?.id || "u1", user?.name || "Customer", "+1234567890");
-    let paidCount = 0;
-    for (const b of created) {
-      const res = payForBooking(b.id);
-      if (res.success) paidCount++;
-    }
-    setSuccess({ count: paidCount, total });
-  };
-
-  const goWallet = () => {
-    setInsufficient(false);
-    navigate("/customer/wallet", { state: { from: "cart" } });
+    setSuccess({ count: created.length, total });
   };
 
   const chatProvider = (item: CartItem) => {
@@ -161,13 +146,11 @@ const CustomerCart = () => {
                 <span className="text-primary">₹{total.toFixed(2)}</span>
               </div>
             </div>
-            <div className={`text-xs px-3 py-2 rounded-lg ${walletBalance >= total ? "bg-success/10 text-success" : "bg-warning/10 text-warning"}`}>
-              {walletBalance >= total
-                ? `✓ Sufficient wallet balance (₹${walletBalance.toFixed(2)})`
-                : `Need ₹${(total - walletBalance).toFixed(2)} more in wallet`}
+            <div className="text-xs px-3 py-2 rounded-lg bg-primary/10 text-primary">
+              Bookings will be created as <strong>Unpaid</strong>. Pay each one from <strong>My Bookings</strong> using your wallet.
             </div>
             <Button onClick={handleCheckout} className="w-full gradient-primary text-primary-foreground">
-              <Wallet className="w-4 h-4 mr-1.5" /> Checkout & Pay ₹{total.toFixed(2)}
+              <ShoppingCart className="w-4 h-4 mr-1.5" /> Proceed to Book ({cart.length})
             </Button>
             <Button variant="ghost" onClick={clearCart} className="w-full text-destructive hover:text-destructive">
               Clear Cart
@@ -175,28 +158,6 @@ const CustomerCart = () => {
           </CardContent>
         </Card>
       </div>
-
-      {/* Insufficient balance */}
-      <Dialog open={insufficient} onOpenChange={(o) => !o && setInsufficient(false)}>
-        <DialogContent className="sm:max-w-md">
-          <div className="text-center py-4">
-            <div className="w-16 h-16 mx-auto rounded-full bg-warning/10 flex items-center justify-center mb-3">
-              <AlertTriangle className="w-8 h-8 text-warning" />
-            </div>
-            <h2 className="text-xl font-bold mb-1">Insufficient Balance</h2>
-            <p className="text-muted-foreground mb-4">
-              Cart total <strong>₹{total.toFixed(2)}</strong> exceeds your wallet balance of <strong>₹{walletBalance.toFixed(2)}</strong>.
-            </p>
-            <p className="text-sm text-muted-foreground mb-5">Add money to your wallet to continue.</p>
-            <div className="flex gap-2">
-              <Button variant="outline" className="flex-1" onClick={() => setInsufficient(false)}>Cancel</Button>
-              <Button className="flex-1 gradient-primary text-primary-foreground" onClick={goWallet}>
-                <Wallet className="w-4 h-4 mr-1.5" /> Go to Wallet
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
 
       {/* Success */}
       <Dialog open={!!success} onOpenChange={(o) => { if (!o) { setSuccess(null); navigate("/customer/bookings"); } }}>
@@ -208,14 +169,17 @@ const CustomerCart = () => {
                 <CheckCircle2 className="w-10 h-10 text-success-foreground" />
               </div>
             </div>
-            <h2 className="text-2xl font-bold mb-1">Order Placed!</h2>
-            <p className="text-muted-foreground mb-5">{success?.count} {success?.count === 1 ? "booking" : "bookings"} confirmed and waiting for provider acceptance.</p>
+            <h2 className="text-2xl font-bold mb-1">Bookings Created!</h2>
+            <p className="text-muted-foreground mb-5">
+              {success?.count} {success?.count === 1 ? "booking has" : "bookings have"} been added to <strong>My Bookings</strong> as <strong>Unpaid</strong>. Pay each one from there using your wallet.
+            </p>
             <div className="bg-muted/50 rounded-xl p-4 text-left space-y-2 text-sm">
-              <div className="flex justify-between"><span className="text-muted-foreground">Total Paid</span><span className="font-bold text-success">₹{success?.total.toFixed(2)}</span></div>
-              <div className="flex justify-between"><span className="text-muted-foreground">Payment Method</span><span className="font-medium">Wallet</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">Bookings Created</span><span className="font-semibold">{success?.count}</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">Total Due</span><span className="font-bold text-primary">₹{success?.total.toFixed(2)}</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">Status</span><span className="font-medium">Unpaid</span></div>
             </div>
             <Button className="w-full gradient-primary text-primary-foreground mt-5" onClick={() => { setSuccess(null); navigate("/customer/bookings"); }}>
-              View My Bookings
+              <Wallet className="w-4 h-4 mr-1.5" /> Go to My Bookings to Pay
             </Button>
           </div>
         </DialogContent>
