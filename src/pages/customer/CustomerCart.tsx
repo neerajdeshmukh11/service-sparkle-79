@@ -3,15 +3,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { ShoppingCart, Trash2, Calendar, Clock, MapPin, Wallet, MessageCircle, CheckCircle2 } from "lucide-react";
-import { useAppState, type CartItem } from "@/contexts/AppStateContext";
+import { ShoppingCart, Trash2, Calendar, Clock, MapPin, CheckCircle2, ArrowRight } from "lucide-react";
+import { useAppState } from "@/contexts/AppStateContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 const CustomerCart = () => {
-  const { cart, updateCartItem, removeFromCart, clearCart, checkoutCart, walletBalance } = useAppState();
+  const { cart, updateCartItem, removeFromCart, clearCart, checkoutCart } = useAppState();
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -29,11 +29,6 @@ const CustomerCart = () => {
     // Create unpaid bookings — payment will happen on the bookings page
     const created = checkoutCart(user?.id || "u1", user?.name || "Customer", "+1234567890");
     setSuccess({ count: created.length, total });
-  };
-
-  const chatProvider = (item: CartItem) => {
-    // Create a temporary "inquiry" booking-less chat by routing to chat page with cart provider context
-    toast.info("Chat available after booking is created. Use 'Chat with Provider' on the booking once added.");
   };
 
   if (cart.length === 0 && !success) {
@@ -58,16 +53,9 @@ const CustomerCart = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-bold">My Cart</h1>
-          <p className="text-muted-foreground">{cart.length} {cart.length === 1 ? "service" : "services"} ready for checkout</p>
-        </div>
-        <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-card border border-border shadow-sm">
-          <Wallet className="w-4 h-4 text-primary" />
-          <span className="text-sm text-muted-foreground">Wallet:</span>
-          <span className="font-semibold">₹{walletBalance.toFixed(2)}</span>
-        </div>
+      <div>
+        <h1 className="text-2xl font-bold">My Cart</h1>
+        <p className="text-muted-foreground">{cart.length} {cart.length === 1 ? "service" : "services"} ready to book</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-6">
@@ -105,11 +93,6 @@ const CustomerCart = () => {
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap gap-2">
-                    <Button variant="outline" size="sm" onClick={() => chatProvider(item)}>
-                      <MessageCircle className="w-4 h-4 mr-1.5" /> Chat with Provider
-                    </Button>
-                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -147,10 +130,10 @@ const CustomerCart = () => {
               </div>
             </div>
             <div className="text-xs px-3 py-2 rounded-lg bg-primary/10 text-primary">
-              Bookings will be created as <strong>Unpaid</strong>. Pay each one from <strong>My Bookings</strong> using your wallet.
+              Bookings will be created as <strong>Unpaid</strong>. Chat with the provider and complete payment from <strong>My Bookings</strong>.
             </div>
             <Button onClick={handleCheckout} className="w-full gradient-primary text-primary-foreground">
-              <ShoppingCart className="w-4 h-4 mr-1.5" /> Proceed to Book ({cart.length})
+              Book {cart.length} {cart.length === 1 ? "Service" : "Services"} <ArrowRight className="w-4 h-4 ml-1.5" />
             </Button>
             <Button variant="ghost" onClick={clearCart} className="w-full text-destructive hover:text-destructive">
               Clear Cart
@@ -171,7 +154,7 @@ const CustomerCart = () => {
             </div>
             <h2 className="text-2xl font-bold mb-1">Bookings Created!</h2>
             <p className="text-muted-foreground mb-5">
-              {success?.count} {success?.count === 1 ? "booking has" : "bookings have"} been added to <strong>My Bookings</strong> as <strong>Unpaid</strong>. Pay each one from there using your wallet.
+              {success?.count} {success?.count === 1 ? "booking has" : "bookings have"} been added to <strong>My Bookings</strong>. Chat with the provider and pay when you're ready.
             </p>
             <div className="bg-muted/50 rounded-xl p-4 text-left space-y-2 text-sm">
               <div className="flex justify-between"><span className="text-muted-foreground">Bookings Created</span><span className="font-semibold">{success?.count}</span></div>
@@ -179,7 +162,7 @@ const CustomerCart = () => {
               <div className="flex justify-between"><span className="text-muted-foreground">Status</span><span className="font-medium">Unpaid</span></div>
             </div>
             <Button className="w-full gradient-primary text-primary-foreground mt-5" onClick={() => { setSuccess(null); navigate("/customer/bookings"); }}>
-              <Wallet className="w-4 h-4 mr-1.5" /> Go to My Bookings to Pay
+              Go to My Bookings <ArrowRight className="w-4 h-4 ml-1.5" />
             </Button>
           </div>
         </DialogContent>
