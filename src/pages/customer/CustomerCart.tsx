@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { ShoppingCart, Trash2, Calendar, Clock, MapPin, Wallet, MessageCircle, AlertTriangle, CheckCircle2 } from "lucide-react";
+import { ShoppingCart, Trash2, Calendar, Clock, MapPin, Wallet, MessageCircle, CheckCircle2 } from "lucide-react";
 import { useAppState, type CartItem } from "@/contexts/AppStateContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -11,11 +11,10 @@ import { toast } from "sonner";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 const CustomerCart = () => {
-  const { cart, updateCartItem, removeFromCart, clearCart, checkoutCart, walletBalance, payForBooking, setActiveChatBookingId } = useAppState();
+  const { cart, updateCartItem, removeFromCart, clearCart, checkoutCart, walletBalance } = useAppState();
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const [insufficient, setInsufficient] = useState(false);
   const [success, setSuccess] = useState<{ count: number; total: number } | null>(null);
 
   const total = cart.reduce((sum, item) => sum + item.price, 0);
@@ -27,23 +26,9 @@ const CustomerCart = () => {
       toast.error("Please complete date, time and address for every item");
       return;
     }
-    if (walletBalance < total) {
-      setInsufficient(true);
-      return;
-    }
-    // Create bookings, then pay each from wallet
+    // Create unpaid bookings — payment will happen on the bookings page
     const created = checkoutCart(user?.id || "u1", user?.name || "Customer", "+1234567890");
-    let paidCount = 0;
-    for (const b of created) {
-      const res = payForBooking(b.id);
-      if (res.success) paidCount++;
-    }
-    setSuccess({ count: paidCount, total });
-  };
-
-  const goWallet = () => {
-    setInsufficient(false);
-    navigate("/customer/wallet", { state: { from: "cart" } });
+    setSuccess({ count: created.length, total });
   };
 
   const chatProvider = (item: CartItem) => {
