@@ -11,7 +11,8 @@ import StatusBadge from "@/components/shared/StatusBadge";
 const ProviderChat = () => {
   const { user } = useAuth();
   const { bookings, activeChatBookingId, setActiveChatBookingId, getBookingChat, sendChatMessage } = useAppState();
-  const chatBookings = bookings.filter(b => b.paymentStatus === "paid");
+  // Show all customer bookings (including unpaid) — customers may want to chat before paying
+  const chatBookings = bookings;
   const selectedId = activeChatBookingId && chatBookings.find(b => b.id === activeChatBookingId)
     ? activeChatBookingId
     : chatBookings[0]?.id || null;

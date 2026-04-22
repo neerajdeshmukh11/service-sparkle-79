@@ -594,8 +594,8 @@ export const CustomerChat = () => {
   const { user } = useAuth();
   const { bookings, activeChatBookingId, setActiveChatBookingId, getBookingChat, sendChatMessage } = useAppState();
 
-  // Chats are available for paid bookings (provider has been engaged)
-  const chatBookings = bookings.filter(b => b.paymentStatus === "paid");
+  // Allow chat for any booking — customers can chat with provider before paying too
+  const chatBookings = bookings;
   const selectedId = activeChatBookingId && chatBookings.find(b => b.id === activeChatBookingId)
     ? activeChatBookingId
     : chatBookings[0]?.id || null;
@@ -616,7 +616,7 @@ export const CustomerChat = () => {
         <div><h1 className="text-2xl font-bold">Chat</h1><p className="text-muted-foreground">Communicate with your service provider</p></div>
         <Card><CardContent className="p-12 text-center text-muted-foreground">
           <MessageCircle className="w-12 h-12 mx-auto mb-3 opacity-30" />
-          <p>No active chats. Pay for a booking to start chatting with your provider.</p>
+          <p>No active chats. Book a service to start chatting with your provider — even before paying.</p>
         </CardContent></Card>
       </div>
     );
