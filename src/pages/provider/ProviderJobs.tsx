@@ -132,22 +132,28 @@ const ProviderJobs = () => {
 
                     {j.status === "awaiting-acceptance" && (
                       <>
-                        <Button size="sm" className="bg-success text-success-foreground hover:bg-success/90" onClick={() => { acceptBooking(j.id); toast.success("Job accepted!"); }}>
+                        <Button size="sm" className="bg-success text-success-foreground hover:bg-success/90" onClick={() => { acceptBooking(j.id); toast.success("Request accepted", { description: "Customer can now complete payment to start the job." }); }}>
                           <CheckCircle className="w-4 h-4 mr-1.5" /> Accept
                         </Button>
-                        <Button size="sm" variant="destructive" onClick={() => { declineBooking(j.id); toast.message("Job declined", { description: "Customer has been refunded." }); }}>
+                        <Button size="sm" variant="destructive" onClick={() => { declineBooking(j.id); toast.message("Request declined"); }}>
                           Decline
                         </Button>
                       </>
                     )}
 
-                    {j.status === "accepted" && j.stage === "en-route" && (
+                    {j.status === "accepted" && j.paymentStatus === "unpaid" && (
+                      <Badge variant="outline" className="border-warning text-warning bg-warning/10 px-3 py-1.5">
+                        <Clock className="w-3.5 h-3.5 mr-1.5" /> Waiting for customer payment
+                      </Badge>
+                    )}
+
+                    {j.status === "accepted" && j.paymentStatus === "paid" && j.stage === "en-route" && (
                       <Button size="sm" onClick={() => updateJobStage(j.id, "arrived")}>
                         <Navigation className="w-4 h-4 mr-1.5" /> Mark Arrived
                       </Button>
                     )}
 
-                    {j.status === "accepted" && j.stage === "arrived" && (
+                    {j.status === "accepted" && j.paymentStatus === "paid" && j.stage === "arrived" && (
                       <>
                         <Button size="sm" variant="outline" onClick={() => beforeRefs.current[j.id]?.click()}>
                           <ImagePlus className="w-4 h-4 mr-1.5" /> Upload Before
