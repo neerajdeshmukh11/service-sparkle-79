@@ -46,6 +46,7 @@ export interface ChatMessage {
   senderName: string;
   message: string;
   timestamp: string;
+  createdAtMs: number;
 }
 
 export interface CartItem {
