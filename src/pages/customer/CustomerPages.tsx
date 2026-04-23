@@ -105,7 +105,7 @@ export const CustomerServices = () => {
       amount: bookingService.price,
       notes,
     });
-    toast.success("Booking created!", { description: "Head to My Bookings to complete payment." });
+    toast.success("Booking request sent!", { description: "The provider will accept or decline shortly. You can chat with them in the meantime." });
     resetForm();
     setBookingService(null);
     navigate("/customer/bookings");
@@ -219,7 +219,7 @@ export const CustomerServices = () => {
           <DialogFooter>
             <Button variant="outline" onClick={() => { setBookingService(null); resetForm(); }}>Cancel</Button>
             <Button onClick={handleConfirm} className="gradient-primary text-primary-foreground">
-              Confirm Booking — ₹{bookingService?.price}
+              Send Request to Provider
             </Button>
           </DialogFooter>
         </DialogContent>
