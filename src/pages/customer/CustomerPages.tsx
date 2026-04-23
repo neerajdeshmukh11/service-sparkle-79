@@ -32,7 +32,7 @@ export const CustomerHome = () => {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatsCard title="My Bookings" value={myBookings || stats.totalBookings} icon={Calendar} iconColor="bg-primary/10 text-primary" />
-        <StatsCard title="Active" value={bookings.filter(b => ["awaiting-acceptance","accepted","in-progress","pending-payment"].includes(b.status)).length} icon={Clock} iconColor="bg-info/10 text-info" />
+        <StatsCard title="Active" value={bookings.filter(b => ["awaiting-acceptance","accepted","in-progress"].includes(b.status)).length} icon={Clock} iconColor="bg-info/10 text-info" />
         <StatsCard title="Completed" value={bookings.filter(b => b.status === "completed").length} icon={Star} iconColor="bg-success/10 text-success" />
         <StatsCard title="Wallet Balance" value={`₹${walletBalance.toFixed(2)}`} icon={Wallet} iconColor="bg-warning/10 text-warning" />
       </div>
