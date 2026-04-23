@@ -130,7 +130,7 @@ export const AppStateProvider = ({ children }: { children: ReactNode }) => {
     const booking: Booking = {
       ...data,
       id: `b${Date.now()}`,
-      status: "pending-payment",
+      status: "awaiting-acceptance",
       paymentStatus: "unpaid",
       stage: "",
       createdAt: now(),
@@ -155,7 +155,7 @@ export const AppStateProvider = ({ children }: { children: ReactNode }) => {
       time: c.time,
       amount: c.price,
       notes: c.notes,
-      status: "pending-payment",
+      status: "awaiting-acceptance",
       paymentStatus: "unpaid",
       stage: "",
       createdAt: now(),
