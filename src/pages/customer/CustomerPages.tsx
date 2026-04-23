@@ -654,26 +654,34 @@ export const CustomerChat = () => {
         <Card className="overflow-hidden">
           <div className="p-3 border-b border-border font-semibold text-sm">Conversations</div>
           <div className="overflow-y-auto h-full divide-y divide-border">
-            {chatBookings.map(b => (
-              <button
-                key={b.id}
-                onClick={() => setActiveChatBookingId(b.id)}
-                className={cn(
-                  "w-full text-left p-3 transition-colors hover:bg-muted/50",
-                  selectedId === b.id && "bg-primary/5 border-l-2 border-primary"
-                )}
-              >
-                <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm shrink-0">
-                    {b.providerName.charAt(0)}
+            {chatBookings.map(b => {
+              const unread = getUnreadCount(b.id, "customer");
+              return (
+                <button
+                  key={b.id}
+                  onClick={() => setActiveChatBookingId(b.id)}
+                  className={cn(
+                    "w-full text-left p-3 transition-colors hover:bg-muted/50",
+                    selectedId === b.id && "bg-primary/5 border-l-2 border-primary"
+                  )}
+                >
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm shrink-0">
+                      {b.providerName.charAt(0)}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className={cn("text-sm truncate", unread > 0 ? "font-semibold" : "font-medium")}>{b.providerName}</p>
+                      <p className="text-xs text-muted-foreground truncate">{b.service}</p>
+                    </div>
+                    {unread > 0 && selectedId !== b.id && (
+                      <span className="ml-1 min-w-[20px] h-5 px-1.5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center shadow-sm">
+                        {unread > 9 ? "9+" : unread}
+                      </span>
+                    )}
                   </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="font-medium text-sm truncate">{b.providerName}</p>
-                    <p className="text-xs text-muted-foreground truncate">{b.service}</p>
-                  </div>
-                </div>
-              </button>
-            ))}
+                </button>
+              );
+            })}
           </div>
         </Card>
 
