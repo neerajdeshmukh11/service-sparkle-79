@@ -66,6 +66,7 @@ const ProviderJobs = () => {
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList>
           <TabsTrigger value="requests">New Requests ({requests.length})</TabsTrigger>
+          <TabsTrigger value="awaiting-payment">Awaiting Payment ({awaitingPayment.length})</TabsTrigger>
           <TabsTrigger value="active">Active ({active.length})</TabsTrigger>
           <TabsTrigger value="completed">Completed ({completed.length})</TabsTrigger>
         </TabsList>
