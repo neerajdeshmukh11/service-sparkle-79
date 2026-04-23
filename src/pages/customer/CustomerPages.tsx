@@ -279,8 +279,8 @@ export const CustomerBookings = () => {
 
   const filtered = bookings.filter(b => {
     if (tab === "all") return true;
-    if (tab === "pending") return b.status === "pending-payment" || b.status === "awaiting-acceptance";
-    if (tab === "active") return b.status === "accepted" || b.status === "in-progress";
+    if (tab === "pending") return b.status === "awaiting-acceptance" || (b.status === "accepted" && b.paymentStatus === "unpaid");
+    if (tab === "active") return (b.status === "accepted" && b.paymentStatus === "paid") || b.status === "in-progress";
     if (tab === "completed") return b.status === "completed";
     return true;
   });
@@ -347,7 +347,11 @@ export const CustomerBookings = () => {
                   <div className="space-y-1.5 flex-1">
                     <div className="flex items-center gap-2 flex-wrap">
                       <h3 className="font-semibold text-lg">{b.service}</h3>
-                      <StatusBadge status={b.status === "pending-payment" ? "pending" : b.status === "awaiting-acceptance" ? "confirmed" : b.status} />
+                      <StatusBadge status={
+                        b.status === "awaiting-acceptance" ? "pending" :
+                        b.status === "accepted" && b.paymentStatus === "unpaid" ? "confirmed" :
+                        b.status
+                      } />
                       <StatusBadge status={b.paymentStatus} />
                     </div>
                     <p className="text-sm text-muted-foreground">Provider: <strong className="text-foreground">{b.providerName}</strong></p>
@@ -358,7 +362,12 @@ export const CustomerBookings = () => {
 
                 {/* Action row */}
                 <div className="flex flex-wrap gap-2 pt-3 border-t border-border">
-                  {b.paymentStatus === "unpaid" && b.status === "pending-payment" && (
+                  {b.status === "awaiting-acceptance" && (
+                    <Button size="sm" variant="outline" onClick={() => openChat(b)}>
+                      <MessageCircle className="w-4 h-4 mr-1.5" /> Chat with Provider
+                    </Button>
+                  )}
+                  {b.status === "accepted" && b.paymentStatus === "unpaid" && (
                     <>
                       <Button size="sm" className="gradient-primary text-primary-foreground" onClick={() => handlePay(b)}>
                         <Wallet className="w-4 h-4 mr-1.5" /> Pay Now
@@ -368,7 +377,7 @@ export const CustomerBookings = () => {
                       </Button>
                     </>
                   )}
-                  {b.paymentStatus === "paid" && (b.status === "awaiting-acceptance" || b.status === "accepted" || b.status === "in-progress") && (
+                  {b.paymentStatus === "paid" && (b.status === "accepted" || b.status === "in-progress") && (
                     <>
                       <Button size="sm" variant="outline" onClick={() => setLocationFor(b)}>
                         <MapPin className="w-4 h-4 mr-1.5" /> Provider Location
@@ -403,10 +412,16 @@ export const CustomerBookings = () => {
                 {b.status === "awaiting-acceptance" && (
                   <div className="flex items-center gap-2 text-xs text-info bg-info/5 p-2.5 rounded-lg">
                     <Clock className="w-3.5 h-3.5" />
-                    Waiting for provider to accept your request…
+                    Waiting for the provider to accept your request — you can chat with them in the meantime.
                   </div>
                 )}
-                {b.status === "accepted" && b.stage === "en-route" && (
+                {b.status === "accepted" && b.paymentStatus === "unpaid" && (
+                  <div className="flex items-center gap-2 text-xs text-warning bg-warning/5 p-2.5 rounded-lg">
+                    <Wallet className="w-3.5 h-3.5" />
+                    Provider accepted! Pay now to schedule the job.
+                  </div>
+                )}
+                {b.status === "accepted" && b.paymentStatus === "paid" && b.stage === "en-route" && (
                   <div className="flex items-center gap-2 text-xs text-info bg-info/5 p-2.5 rounded-lg">
                     🚗 Provider is on the way to your location.
                   </div>
