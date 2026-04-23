@@ -107,6 +107,8 @@ export const AppStateProvider = ({ children }: { children: ReactNode }) => {
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [activeChatBookingId, setActiveChatBookingId] = useState<string | null>(null);
   const [cart, setCart] = useState<CartItem[]>([]);
+  // Last-read timestamps per booking, per viewer role. Messages with createdAtMs > lastRead are unread.
+  const [lastRead, setLastRead] = useState<Record<string, { customer?: number; provider?: number }>>({});
 
   const addToCart: AppStateContextType["addToCart"] = useCallback((item) => {
     setCart((prev) => [...prev, { ...item, id: `c${Date.now()}${Math.random().toString(36).slice(2, 6)}` }]);
