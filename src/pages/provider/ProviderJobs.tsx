@@ -89,8 +89,8 @@ const ProviderJobs = () => {
                     <div className="flex items-center gap-3 flex-wrap">
                       <h3 className="font-semibold text-lg">{j.service}</h3>
                       <StatusBadge status={j.status === "awaiting-acceptance" ? "pending" : j.status} />
-                      {j.stage && j.stage !== "completed" && <Badge variant="outline" className="capitalize">{j.stage}</Badge>}
-                      <StatusBadge status="paid" />
+                      {j.stage && j.stage !== "completed" && j.paymentStatus === "paid" && <Badge variant="outline" className="capitalize">{j.stage}</Badge>}
+                      <StatusBadge status={j.paymentStatus} />
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-muted-foreground">
                       <span className="flex items-center gap-2"><Clock className="w-4 h-4" />{j.date} at {j.time}</span>
