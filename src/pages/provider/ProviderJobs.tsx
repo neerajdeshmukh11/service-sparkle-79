@@ -26,11 +26,16 @@ const ProviderJobs = () => {
   const beforeRefs = useRef<Record<string, HTMLInputElement | null>>({});
   const afterRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
-  const requests = bookings.filter(b => b.status === "awaiting-acceptance" && b.paymentStatus === "paid");
-  const active = bookings.filter(b => b.status === "accepted" || b.status === "in-progress");
+  const requests = bookings.filter(b => b.status === "awaiting-acceptance");
+  const awaitingPayment = bookings.filter(b => b.status === "accepted" && b.paymentStatus === "unpaid");
+  const active = bookings.filter(b => (b.status === "accepted" && b.paymentStatus === "paid") || b.status === "in-progress");
   const completed = bookings.filter(b => b.status === "completed");
 
-  const list = tab === "requests" ? requests : tab === "active" ? active : completed;
+  const list =
+    tab === "requests" ? requests :
+    tab === "awaiting-payment" ? awaitingPayment :
+    tab === "active" ? active :
+    completed;
 
   const openChat = (b: Booking) => {
     setActiveChatBookingId(b.id);
