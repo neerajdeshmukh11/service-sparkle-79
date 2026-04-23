@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -612,7 +612,7 @@ export const CustomerInvoices = () => {
 // ===== Customer Chat =====
 export const CustomerChat = () => {
   const { user } = useAuth();
-  const { bookings, activeChatBookingId, setActiveChatBookingId, getBookingChat, sendChatMessage } = useAppState();
+  const { bookings, activeChatBookingId, setActiveChatBookingId, getBookingChat, sendChatMessage, getUnreadCount, markChatRead } = useAppState();
 
   // Allow chat for any booking — customers can chat with provider before paying too
   const chatBookings = bookings;
@@ -623,6 +623,11 @@ export const CustomerChat = () => {
 
   const [text, setText] = useState("");
   const messages = selected ? getBookingChat(selected.id) : [];
+
+  // Mark messages as read whenever the active conversation changes or new messages arrive in it.
+  useEffect(() => {
+    if (selectedId) markChatRead(selectedId, "customer");
+  }, [selectedId, messages.length, markChatRead]);
 
   const send = () => {
     if (!text.trim() || !selected) return;
