@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode, useCallback } from "react";
 
-export type BookingStatus = "pending-payment" | "awaiting-acceptance" | "accepted" | "declined" | "in-progress" | "completed" | "cancelled";
+export type BookingStatus = "awaiting-acceptance" | "accepted" | "pending-payment" | "declined" | "in-progress" | "completed" | "cancelled";
 export type PaymentStatus = "unpaid" | "paid" | "refunded";
 export type JobStage = "" | "en-route" | "arrived" | "started" | "completed";
 
@@ -88,6 +88,9 @@ interface AppStateContextType {
   completeJob: (bookingId: string) => void;
   sendChatMessage: (bookingId: string, senderRole: "customer" | "provider", senderName: string, message: string) => void;
   getBookingChat: (bookingId: string) => ChatMessage[];
+  getUnreadCount: (bookingId: string, viewerRole: "customer" | "provider") => number;
+  getTotalUnread: (viewerRole: "customer" | "provider") => number;
+  markChatRead: (bookingId: string, viewerRole: "customer" | "provider") => void;
 }
 
 const AppStateContext = createContext<AppStateContextType | undefined>(undefined);
