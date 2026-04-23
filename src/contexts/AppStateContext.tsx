@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode, useCallback } from "react";
 
-export type BookingStatus = "pending-payment" | "awaiting-acceptance" | "accepted" | "declined" | "in-progress" | "completed" | "cancelled";
+export type BookingStatus = "awaiting-acceptance" | "accepted" | "pending-payment" | "declined" | "in-progress" | "completed" | "cancelled";
 export type PaymentStatus = "unpaid" | "paid" | "refunded";
 export type JobStage = "" | "en-route" | "arrived" | "started" | "completed";
 
@@ -46,6 +46,7 @@ export interface ChatMessage {
   senderName: string;
   message: string;
   timestamp: string;
+  createdAtMs: number;
 }
 
 export interface CartItem {
@@ -88,6 +89,9 @@ interface AppStateContextType {
   completeJob: (bookingId: string) => void;
   sendChatMessage: (bookingId: string, senderRole: "customer" | "provider", senderName: string, message: string) => void;
   getBookingChat: (bookingId: string) => ChatMessage[];
+  getUnreadCount: (bookingId: string, viewerRole: "customer" | "provider") => number;
+  getTotalUnread: (viewerRole: "customer" | "provider") => number;
+  markChatRead: (bookingId: string, viewerRole: "customer" | "provider") => void;
 }
 
 const AppStateContext = createContext<AppStateContextType | undefined>(undefined);
@@ -104,6 +108,8 @@ export const AppStateProvider = ({ children }: { children: ReactNode }) => {
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [activeChatBookingId, setActiveChatBookingId] = useState<string | null>(null);
   const [cart, setCart] = useState<CartItem[]>([]);
+  // Last-read timestamps per booking, per viewer role. Messages with createdAtMs > lastRead are unread.
+  const [lastRead, setLastRead] = useState<Record<string, { customer?: number; provider?: number }>>({});
 
   const addToCart: AppStateContextType["addToCart"] = useCallback((item) => {
     setCart((prev) => [...prev, { ...item, id: `c${Date.now()}${Math.random().toString(36).slice(2, 6)}` }]);
@@ -125,7 +131,7 @@ export const AppStateProvider = ({ children }: { children: ReactNode }) => {
     const booking: Booking = {
       ...data,
       id: `b${Date.now()}`,
-      status: "pending-payment",
+      status: "awaiting-acceptance",
       paymentStatus: "unpaid",
       stage: "",
       createdAt: now(),
@@ -150,7 +156,7 @@ export const AppStateProvider = ({ children }: { children: ReactNode }) => {
       time: c.time,
       amount: c.price,
       notes: c.notes,
-      status: "pending-payment",
+      status: "awaiting-acceptance",
       paymentStatus: "unpaid",
       stage: "",
       createdAt: now(),
@@ -225,16 +231,52 @@ export const AppStateProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const sendChatMessage: AppStateContextType["sendChatMessage"] = useCallback((bookingId, senderRole, senderName, message) => {
+    const ts = Date.now();
     setChatMessages((prev) => [
       ...prev,
-      { id: `m${Date.now()}`, bookingId, senderRole, senderName, message, timestamp: now() },
+      { id: `m${ts}`, bookingId, senderRole, senderName, message, timestamp: now(), createdAtMs: ts },
     ]);
+    // Sender has implicitly "read" up to their own latest message.
+    setLastRead((prev) => ({
+      ...prev,
+      [bookingId]: { ...(prev[bookingId] || {}), [senderRole]: ts },
+    }));
   }, []);
 
   const getBookingChat = useCallback(
     (bookingId: string) => chatMessages.filter((m) => m.bookingId === bookingId),
     [chatMessages]
   );
+
+  const getUnreadCount = useCallback(
+    (bookingId: string, viewerRole: "customer" | "provider") => {
+      const cutoff = lastRead[bookingId]?.[viewerRole] ?? 0;
+      return chatMessages.filter(
+        (m) => m.bookingId === bookingId && m.senderRole !== viewerRole && m.createdAtMs > cutoff
+      ).length;
+    },
+    [chatMessages, lastRead]
+  );
+
+  const getTotalUnread = useCallback(
+    (viewerRole: "customer" | "provider") => {
+      // Count incoming messages whose createdAtMs exceeds the viewer's last-read mark for that booking.
+      return chatMessages.reduce((acc, m) => {
+        if (m.senderRole === viewerRole) return acc;
+        const cutoff = lastRead[m.bookingId]?.[viewerRole] ?? 0;
+        return m.createdAtMs > cutoff ? acc + 1 : acc;
+      }, 0);
+    },
+    [chatMessages, lastRead]
+  );
+
+  const markChatRead = useCallback((bookingId: string, viewerRole: "customer" | "provider") => {
+    const ts = Date.now();
+    setLastRead((prev) => ({
+      ...prev,
+      [bookingId]: { ...(prev[bookingId] || {}), [viewerRole]: ts },
+    }));
+  }, []);
 
   return (
     <AppStateContext.Provider
@@ -261,6 +303,9 @@ export const AppStateProvider = ({ children }: { children: ReactNode }) => {
         completeJob,
         sendChatMessage,
         getBookingChat,
+        getUnreadCount,
+        getTotalUnread,
+        markChatRead,
       }}
     >
       {children}

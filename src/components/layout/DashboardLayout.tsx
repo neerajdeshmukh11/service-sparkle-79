@@ -73,13 +73,17 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const { user, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const { cart } = useAppState();
+  const { cart, getTotalUnread } = useAppState();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   if (!user) return null;
 
   const navItems = getNav(user.role);
+  // Compute unread chat count for the current user role (admins don't have a chat inbox).
+  const chatUnread =
+    user.role === "customer" ? getTotalUnread("customer") :
+    user.role === "provider" ? getTotalUnread("provider") : 0;
 
   const handleLogout = () => {
     logout();
@@ -117,6 +121,12 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
           {navItems.map((item) => {
             const isActive = location.pathname === item.path;
             const showCartBadge = item.path === "/customer/cart" && cart.length > 0;
+            const isChatItem = item.path === "/customer/chat" || item.path === "/provider/chat";
+            const showChatBadge = isChatItem && chatUnread > 0;
+            const badgeValue = showCartBadge ? cart.length : showChatBadge ? chatUnread : null;
+            const badgeColor = showCartBadge
+              ? "bg-primary text-primary-foreground"
+              : "bg-destructive text-destructive-foreground";
             return (
               <Link
                 key={item.path}
@@ -132,18 +142,24 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
               >
                 <div className="relative">
                   {item.icon}
-                  {showCartBadge && collapsed && (
-                    <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center">
-                      {cart.length}
+                  {badgeValue !== null && collapsed && (
+                    <span className={cn(
+                      "absolute -top-1.5 -right-1.5 min-w-[16px] h-4 px-1 rounded-full text-[10px] font-bold flex items-center justify-center",
+                      badgeColor
+                    )}>
+                      {badgeValue > 9 ? "9+" : badgeValue}
                     </span>
                   )}
                 </div>
                 {!collapsed && (
                   <>
                     <span className="text-sm font-medium flex-1">{item.label}</span>
-                    {showCartBadge && (
-                      <span className="ml-auto px-2 py-0.5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold">
-                        {cart.length}
+                    {badgeValue !== null && (
+                      <span className={cn(
+                        "ml-auto min-w-[20px] px-2 py-0.5 rounded-full text-[10px] font-bold text-center",
+                        badgeColor
+                      )}>
+                        {badgeValue > 9 ? "9+" : badgeValue}
                       </span>
                     )}
                   </>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -32,7 +32,7 @@ export const CustomerHome = () => {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatsCard title="My Bookings" value={myBookings || stats.totalBookings} icon={Calendar} iconColor="bg-primary/10 text-primary" />
-        <StatsCard title="Active" value={bookings.filter(b => ["awaiting-acceptance","accepted","in-progress","pending-payment"].includes(b.status)).length} icon={Clock} iconColor="bg-info/10 text-info" />
+        <StatsCard title="Active" value={bookings.filter(b => ["awaiting-acceptance","accepted","in-progress"].includes(b.status)).length} icon={Clock} iconColor="bg-info/10 text-info" />
         <StatsCard title="Completed" value={bookings.filter(b => b.status === "completed").length} icon={Star} iconColor="bg-success/10 text-success" />
         <StatsCard title="Wallet Balance" value={`₹${walletBalance.toFixed(2)}`} icon={Wallet} iconColor="bg-warning/10 text-warning" />
       </div>
@@ -105,7 +105,7 @@ export const CustomerServices = () => {
       amount: bookingService.price,
       notes,
     });
-    toast.success("Booking created!", { description: "Head to My Bookings to complete payment." });
+    toast.success("Booking request sent!", { description: "The provider will accept or decline shortly. You can chat with them in the meantime." });
     resetForm();
     setBookingService(null);
     navigate("/customer/bookings");
@@ -219,7 +219,7 @@ export const CustomerServices = () => {
           <DialogFooter>
             <Button variant="outline" onClick={() => { setBookingService(null); resetForm(); }}>Cancel</Button>
             <Button onClick={handleConfirm} className="gradient-primary text-primary-foreground">
-              Confirm Booking — ₹{bookingService?.price}
+              Send Request to Provider
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -279,8 +279,8 @@ export const CustomerBookings = () => {
 
   const filtered = bookings.filter(b => {
     if (tab === "all") return true;
-    if (tab === "pending") return b.status === "pending-payment" || b.status === "awaiting-acceptance";
-    if (tab === "active") return b.status === "accepted" || b.status === "in-progress";
+    if (tab === "pending") return b.status === "awaiting-acceptance" || (b.status === "accepted" && b.paymentStatus === "unpaid");
+    if (tab === "active") return (b.status === "accepted" && b.paymentStatus === "paid") || b.status === "in-progress";
     if (tab === "completed") return b.status === "completed";
     return true;
   });
@@ -347,7 +347,11 @@ export const CustomerBookings = () => {
                   <div className="space-y-1.5 flex-1">
                     <div className="flex items-center gap-2 flex-wrap">
                       <h3 className="font-semibold text-lg">{b.service}</h3>
-                      <StatusBadge status={b.status === "pending-payment" ? "pending" : b.status === "awaiting-acceptance" ? "confirmed" : b.status} />
+                      <StatusBadge status={
+                        b.status === "awaiting-acceptance" ? "pending" :
+                        b.status === "accepted" && b.paymentStatus === "unpaid" ? "confirmed" :
+                        b.status
+                      } />
                       <StatusBadge status={b.paymentStatus} />
                     </div>
                     <p className="text-sm text-muted-foreground">Provider: <strong className="text-foreground">{b.providerName}</strong></p>
@@ -358,7 +362,12 @@ export const CustomerBookings = () => {
 
                 {/* Action row */}
                 <div className="flex flex-wrap gap-2 pt-3 border-t border-border">
-                  {b.paymentStatus === "unpaid" && b.status === "pending-payment" && (
+                  {b.status === "awaiting-acceptance" && (
+                    <Button size="sm" variant="outline" onClick={() => openChat(b)}>
+                      <MessageCircle className="w-4 h-4 mr-1.5" /> Chat with Provider
+                    </Button>
+                  )}
+                  {b.status === "accepted" && b.paymentStatus === "unpaid" && (
                     <>
                       <Button size="sm" className="gradient-primary text-primary-foreground" onClick={() => handlePay(b)}>
                         <Wallet className="w-4 h-4 mr-1.5" /> Pay Now
@@ -368,7 +377,7 @@ export const CustomerBookings = () => {
                       </Button>
                     </>
                   )}
-                  {b.paymentStatus === "paid" && (b.status === "awaiting-acceptance" || b.status === "accepted" || b.status === "in-progress") && (
+                  {b.paymentStatus === "paid" && (b.status === "accepted" || b.status === "in-progress") && (
                     <>
                       <Button size="sm" variant="outline" onClick={() => setLocationFor(b)}>
                         <MapPin className="w-4 h-4 mr-1.5" /> Provider Location
@@ -403,10 +412,16 @@ export const CustomerBookings = () => {
                 {b.status === "awaiting-acceptance" && (
                   <div className="flex items-center gap-2 text-xs text-info bg-info/5 p-2.5 rounded-lg">
                     <Clock className="w-3.5 h-3.5" />
-                    Waiting for provider to accept your request…
+                    Waiting for the provider to accept your request — you can chat with them in the meantime.
                   </div>
                 )}
-                {b.status === "accepted" && b.stage === "en-route" && (
+                {b.status === "accepted" && b.paymentStatus === "unpaid" && (
+                  <div className="flex items-center gap-2 text-xs text-warning bg-warning/5 p-2.5 rounded-lg">
+                    <Wallet className="w-3.5 h-3.5" />
+                    Provider accepted! Pay now to schedule the job.
+                  </div>
+                )}
+                {b.status === "accepted" && b.paymentStatus === "paid" && b.stage === "en-route" && (
                   <div className="flex items-center gap-2 text-xs text-info bg-info/5 p-2.5 rounded-lg">
                     🚗 Provider is on the way to your location.
                   </div>
@@ -597,7 +612,7 @@ export const CustomerInvoices = () => {
 // ===== Customer Chat =====
 export const CustomerChat = () => {
   const { user } = useAuth();
-  const { bookings, activeChatBookingId, setActiveChatBookingId, getBookingChat, sendChatMessage } = useAppState();
+  const { bookings, activeChatBookingId, setActiveChatBookingId, getBookingChat, sendChatMessage, getUnreadCount, markChatRead } = useAppState();
 
   // Allow chat for any booking — customers can chat with provider before paying too
   const chatBookings = bookings;
@@ -608,6 +623,11 @@ export const CustomerChat = () => {
 
   const [text, setText] = useState("");
   const messages = selected ? getBookingChat(selected.id) : [];
+
+  // Mark messages as read whenever the active conversation changes or new messages arrive in it.
+  useEffect(() => {
+    if (selectedId) markChatRead(selectedId, "customer");
+  }, [selectedId, messages.length, markChatRead]);
 
   const send = () => {
     if (!text.trim() || !selected) return;
@@ -634,26 +654,34 @@ export const CustomerChat = () => {
         <Card className="overflow-hidden">
           <div className="p-3 border-b border-border font-semibold text-sm">Conversations</div>
           <div className="overflow-y-auto h-full divide-y divide-border">
-            {chatBookings.map(b => (
-              <button
-                key={b.id}
-                onClick={() => setActiveChatBookingId(b.id)}
-                className={cn(
-                  "w-full text-left p-3 transition-colors hover:bg-muted/50",
-                  selectedId === b.id && "bg-primary/5 border-l-2 border-primary"
-                )}
-              >
-                <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm shrink-0">
-                    {b.providerName.charAt(0)}
+            {chatBookings.map(b => {
+              const unread = getUnreadCount(b.id, "customer");
+              return (
+                <button
+                  key={b.id}
+                  onClick={() => setActiveChatBookingId(b.id)}
+                  className={cn(
+                    "w-full text-left p-3 transition-colors hover:bg-muted/50",
+                    selectedId === b.id && "bg-primary/5 border-l-2 border-primary"
+                  )}
+                >
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm shrink-0">
+                      {b.providerName.charAt(0)}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className={cn("text-sm truncate", unread > 0 ? "font-semibold" : "font-medium")}>{b.providerName}</p>
+                      <p className="text-xs text-muted-foreground truncate">{b.service}</p>
+                    </div>
+                    {unread > 0 && selectedId !== b.id && (
+                      <span className="ml-1 min-w-[20px] h-5 px-1.5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center shadow-sm">
+                        {unread > 9 ? "9+" : unread}
+                      </span>
+                    )}
                   </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="font-medium text-sm truncate">{b.providerName}</p>
-                    <p className="text-xs text-muted-foreground truncate">{b.service}</p>
-                  </div>
-                </div>
-              </button>
-            ))}
+                </button>
+              );
+            })}
           </div>
         </Card>
 

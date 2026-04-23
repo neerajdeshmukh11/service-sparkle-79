@@ -26,11 +26,16 @@ const ProviderJobs = () => {
   const beforeRefs = useRef<Record<string, HTMLInputElement | null>>({});
   const afterRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
-  const requests = bookings.filter(b => b.status === "awaiting-acceptance" && b.paymentStatus === "paid");
-  const active = bookings.filter(b => b.status === "accepted" || b.status === "in-progress");
+  const requests = bookings.filter(b => b.status === "awaiting-acceptance");
+  const awaitingPayment = bookings.filter(b => b.status === "accepted" && b.paymentStatus === "unpaid");
+  const active = bookings.filter(b => (b.status === "accepted" && b.paymentStatus === "paid") || b.status === "in-progress");
   const completed = bookings.filter(b => b.status === "completed");
 
-  const list = tab === "requests" ? requests : tab === "active" ? active : completed;
+  const list =
+    tab === "requests" ? requests :
+    tab === "awaiting-payment" ? awaitingPayment :
+    tab === "active" ? active :
+    completed;
 
   const openChat = (b: Booking) => {
     setActiveChatBookingId(b.id);
@@ -61,6 +66,7 @@ const ProviderJobs = () => {
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList>
           <TabsTrigger value="requests">New Requests ({requests.length})</TabsTrigger>
+          <TabsTrigger value="awaiting-payment">Awaiting Payment ({awaitingPayment.length})</TabsTrigger>
           <TabsTrigger value="active">Active ({active.length})</TabsTrigger>
           <TabsTrigger value="completed">Completed ({completed.length})</TabsTrigger>
         </TabsList>
@@ -83,8 +89,8 @@ const ProviderJobs = () => {
                     <div className="flex items-center gap-3 flex-wrap">
                       <h3 className="font-semibold text-lg">{j.service}</h3>
                       <StatusBadge status={j.status === "awaiting-acceptance" ? "pending" : j.status} />
-                      {j.stage && j.stage !== "completed" && <Badge variant="outline" className="capitalize">{j.stage}</Badge>}
-                      <StatusBadge status="paid" />
+                      {j.stage && j.stage !== "completed" && j.paymentStatus === "paid" && <Badge variant="outline" className="capitalize">{j.stage}</Badge>}
+                      <StatusBadge status={j.paymentStatus} />
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-muted-foreground">
                       <span className="flex items-center gap-2"><Clock className="w-4 h-4" />{j.date} at {j.time}</span>
@@ -126,22 +132,28 @@ const ProviderJobs = () => {
 
                     {j.status === "awaiting-acceptance" && (
                       <>
-                        <Button size="sm" className="bg-success text-success-foreground hover:bg-success/90" onClick={() => { acceptBooking(j.id); toast.success("Job accepted!"); }}>
+                        <Button size="sm" className="bg-success text-success-foreground hover:bg-success/90" onClick={() => { acceptBooking(j.id); toast.success("Request accepted", { description: "Customer can now complete payment to start the job." }); }}>
                           <CheckCircle className="w-4 h-4 mr-1.5" /> Accept
                         </Button>
-                        <Button size="sm" variant="destructive" onClick={() => { declineBooking(j.id); toast.message("Job declined", { description: "Customer has been refunded." }); }}>
+                        <Button size="sm" variant="destructive" onClick={() => { declineBooking(j.id); toast.message("Request declined"); }}>
                           Decline
                         </Button>
                       </>
                     )}
 
-                    {j.status === "accepted" && j.stage === "en-route" && (
+                    {j.status === "accepted" && j.paymentStatus === "unpaid" && (
+                      <Badge variant="outline" className="border-warning text-warning bg-warning/10 px-3 py-1.5">
+                        <Clock className="w-3.5 h-3.5 mr-1.5" /> Waiting for customer payment
+                      </Badge>
+                    )}
+
+                    {j.status === "accepted" && j.paymentStatus === "paid" && j.stage === "en-route" && (
                       <Button size="sm" onClick={() => updateJobStage(j.id, "arrived")}>
                         <Navigation className="w-4 h-4 mr-1.5" /> Mark Arrived
                       </Button>
                     )}
 
-                    {j.status === "accepted" && j.stage === "arrived" && (
+                    {j.status === "accepted" && j.paymentStatus === "paid" && j.stage === "arrived" && (
                       <>
                         <Button size="sm" variant="outline" onClick={() => beforeRefs.current[j.id]?.click()}>
                           <ImagePlus className="w-4 h-4 mr-1.5" /> Upload Before
