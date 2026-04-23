@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,7 @@ import StatusBadge from "@/components/shared/StatusBadge";
 
 const ProviderChat = () => {
   const { user } = useAuth();
-  const { bookings, activeChatBookingId, setActiveChatBookingId, getBookingChat, sendChatMessage } = useAppState();
+  const { bookings, activeChatBookingId, setActiveChatBookingId, getBookingChat, sendChatMessage, getUnreadCount, markChatRead } = useAppState();
   // Show all customer bookings (including unpaid) — customers may want to chat before paying
   const chatBookings = bookings;
   const selectedId = activeChatBookingId && chatBookings.find(b => b.id === activeChatBookingId)
@@ -20,6 +20,11 @@ const ProviderChat = () => {
 
   const [text, setText] = useState("");
   const messages = selected ? getBookingChat(selected.id) : [];
+
+  // Mark messages as read whenever the active conversation changes or new messages arrive in it.
+  useEffect(() => {
+    if (selectedId) markChatRead(selectedId, "provider");
+  }, [selectedId, messages.length, markChatRead]);
 
   const send = () => {
     if (!text.trim() || !selected) return;
