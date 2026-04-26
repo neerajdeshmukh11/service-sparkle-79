@@ -49,6 +49,32 @@ export interface ChatMessage {
   createdAtMs: number;
 }
 
+export type SupportTicketStatus = "open" | "in-review" | "resolved";
+export type SupportTicketPriority = "low" | "medium" | "high";
+
+export interface SupportTicketReply {
+  id: string;
+  authorRole: "provider" | "admin";
+  authorName: string;
+  message: string;
+  timestamp: string;
+}
+
+export interface SupportTicket {
+  id: string;
+  providerId: string;
+  providerName: string;
+  providerEmail: string;
+  category: string;
+  subject: string;
+  description: string;
+  priority: SupportTicketPriority;
+  status: SupportTicketStatus;
+  createdAt: string;
+  updatedAt: string;
+  replies: SupportTicketReply[];
+}
+
 export interface CartItem {
   id: string;
   serviceId: string;
