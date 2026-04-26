@@ -7,7 +7,7 @@ import {
   AlertTriangle, MessageSquare, Bell, BarChart3, DollarSign, Tag,
   Ticket, Shield, ChevronLeft, ChevronRight, LogOut, Home,
   Briefcase, Star, Wallet, Clock, MapPin, Camera, Settings, User,
-  Search, Calendar, FileText, MessageCircle, Bot, Menu, X, ShoppingCart
+  Search, Calendar, FileText, MessageCircle, Bot, Menu, X, ShoppingCart, LifeBuoy
 } from "lucide-react";
 import { useAppState } from "@/contexts/AppStateContext";
 import { Button } from "@/components/ui/button";
@@ -31,6 +31,7 @@ const adminNav: NavItem[] = [
   { label: "Earnings", path: "/admin/earnings", icon: <DollarSign className="w-5 h-5" /> },
   { label: "Promotions", path: "/admin/promotions", icon: <Tag className="w-5 h-5" /> },
   { label: "Coupons", path: "/admin/coupons", icon: <Ticket className="w-5 h-5" /> },
+  { label: "Support", path: "/admin/support", icon: <LifeBuoy className="w-5 h-5" /> },
 ];
 
 const providerNav: NavItem[] = [
@@ -43,6 +44,7 @@ const providerNav: NavItem[] = [
   { label: "Services", path: "/provider/services", icon: <FolderTree className="w-5 h-5" /> },
   { label: "Chat", path: "/provider/chat", icon: <MessageCircle className="w-5 h-5" /> },
   { label: "Complaints", path: "/provider/complaints", icon: <MessageSquare className="w-5 h-5" /> },
+  { label: "Support", path: "/provider/support", icon: <LifeBuoy className="w-5 h-5" /> },
 ];
 
 const customerNav: NavItem[] = [
