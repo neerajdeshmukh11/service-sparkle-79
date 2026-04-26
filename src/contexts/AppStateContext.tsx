@@ -118,6 +118,10 @@ interface AppStateContextType {
   getUnreadCount: (bookingId: string, viewerRole: "customer" | "provider") => number;
   getTotalUnread: (viewerRole: "customer" | "provider") => number;
   markChatRead: (bookingId: string, viewerRole: "customer" | "provider") => void;
+  supportTickets: SupportTicket[];
+  createSupportTicket: (data: { providerId: string; providerName: string; providerEmail: string; category: string; subject: string; description: string; priority: SupportTicketPriority }) => SupportTicket;
+  replySupportTicket: (ticketId: string, authorRole: "provider" | "admin", authorName: string, message: string) => void;
+  updateSupportTicketStatus: (ticketId: string, status: SupportTicketStatus) => void;
 }
 
 const AppStateContext = createContext<AppStateContextType | undefined>(undefined);
