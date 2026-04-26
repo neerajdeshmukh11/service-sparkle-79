@@ -372,6 +372,10 @@ export const AppStateProvider = ({ children }: { children: ReactNode }) => {
         getUnreadCount,
         getTotalUnread,
         markChatRead,
+        supportTickets,
+        createSupportTicket,
+        replySupportTicket,
+        updateSupportTicketStatus,
       }}
     >
       {children}
