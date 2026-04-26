@@ -21,6 +21,7 @@ import AdminReports from "@/pages/admin/AdminReports";
 import AdminEarnings from "@/pages/admin/AdminEarnings";
 import AdminPromotions from "@/pages/admin/AdminPromotions";
 import AdminCoupons from "@/pages/admin/AdminCoupons";
+import AdminSupport from "@/pages/admin/AdminSupport";
 
 // Provider
 import ProviderDashboard from "@/pages/provider/ProviderDashboard";
@@ -32,6 +33,7 @@ import ProviderRatings from "@/pages/provider/ProviderRatings";
 import ProviderServices from "@/pages/provider/ProviderServices";
 import ProviderChat from "@/pages/provider/ProviderChat";
 import ProviderComplaints from "@/pages/provider/ProviderComplaints";
+import ProviderSupport from "@/pages/provider/ProviderSupport";
 
 // Customer
 import { CustomerHome, CustomerServices, CustomerBookings, CustomerInvoices, CustomerChat, CustomerSupport, CustomerProfile } from "@/pages/customer/CustomerPages";
@@ -71,6 +73,7 @@ const AppRoutes = () => {
       <Route path="/admin/earnings" element={<ProtectedRoute role="admin"><AdminEarnings /></ProtectedRoute>} />
       <Route path="/admin/promotions" element={<ProtectedRoute role="admin"><AdminPromotions /></ProtectedRoute>} />
       <Route path="/admin/coupons" element={<ProtectedRoute role="admin"><AdminCoupons /></ProtectedRoute>} />
+      <Route path="/admin/support" element={<ProtectedRoute role="admin"><AdminSupport /></ProtectedRoute>} />
 
       {/* Provider Routes */}
       <Route path="/provider" element={<ProtectedRoute role="provider"><ProviderDashboard /></ProtectedRoute>} />
@@ -82,6 +85,7 @@ const AppRoutes = () => {
       <Route path="/provider/services" element={<ProtectedRoute role="provider"><ProviderServices /></ProtectedRoute>} />
       <Route path="/provider/chat" element={<ProtectedRoute role="provider"><ProviderChat /></ProtectedRoute>} />
       <Route path="/provider/complaints" element={<ProtectedRoute role="provider"><ProviderComplaints /></ProtectedRoute>} />
+      <Route path="/provider/support" element={<ProtectedRoute role="provider"><ProviderSupport /></ProtectedRoute>} />
 
       {/* Customer Routes */}
       <Route path="/customer" element={<ProtectedRoute role="customer"><CustomerHome /></ProtectedRoute>} />
