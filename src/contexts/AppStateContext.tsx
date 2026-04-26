@@ -140,6 +140,42 @@ export const AppStateProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
   // Last-read timestamps per booking, per viewer role. Messages with createdAtMs > lastRead are unread.
   const [lastRead, setLastRead] = useState<Record<string, { customer?: number; provider?: number }>>({});
+  const [supportTickets, setSupportTickets] = useState<SupportTicket[]>([]);
+
+  const createSupportTicket: AppStateContextType["createSupportTicket"] = useCallback((data) => {
+    const ticket: SupportTicket = {
+      ...data,
+      id: `t${Date.now()}`,
+      status: "open",
+      createdAt: now(),
+      updatedAt: now(),
+      replies: [],
+    };
+    setSupportTickets((prev) => [ticket, ...prev]);
+    return ticket;
+  }, []);
+
+  const replySupportTicket: AppStateContextType["replySupportTicket"] = useCallback((ticketId, authorRole, authorName, message) => {
+    setSupportTickets((prev) =>
+      prev.map((t) =>
+        t.id === ticketId
+          ? {
+              ...t,
+              updatedAt: now(),
+              status: authorRole === "admin" && t.status === "open" ? "in-review" : t.status,
+              replies: [
+                ...t.replies,
+                { id: `r${Date.now()}`, authorRole, authorName, message, timestamp: now() },
+              ],
+            }
+          : t
+      )
+    );
+  }, []);
+
+  const updateSupportTicketStatus: AppStateContextType["updateSupportTicketStatus"] = useCallback((ticketId, status) => {
+    setSupportTickets((prev) => prev.map((t) => (t.id === ticketId ? { ...t, status, updatedAt: now() } : t)));
+  }, []);
 
   const addToCart: AppStateContextType["addToCart"] = useCallback((item) => {
     setCart((prev) => [...prev, { ...item, id: `c${Date.now()}${Math.random().toString(36).slice(2, 6)}` }]);
